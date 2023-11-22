@@ -2,14 +2,6 @@ name: Reusable workflow
 
 on:
   workflow_call:
-    # Map the workflow outputs to job outputs
-    outputs:
-      firstword:
-        description: "The first output string"
-        value: ${{ jobs.example_job.outputs.output1 }}
-      secondword:
-        description: "The second output string"
-        value: ${{ jobs.example_job.outputs.output2 }}
 
 jobs:
   build_job:
@@ -19,13 +11,19 @@ jobs:
     name: Build JAR
     steps:
       - uses: actions/checkout@v4
+      
       - uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
-      - run: mvn --batch-mode --update-snapshots verify
-      - run: mkdir staging && cp target/*.jar staging
-      - uses: actions/upload-artifact@v3
+      
+      - name: Building JAR and moving JAR to specific folder
+        run: |
+          mvn --batch-mode --update-snapshots verify
+          run: mkdir staging && cp target/*.jar staging
+
+      - name: Creating artifact with JAR file 
+        uses: actions/upload-artifact@v3
         with:
           name: Package
           path: staging
