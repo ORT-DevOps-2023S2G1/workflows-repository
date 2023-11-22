@@ -20,7 +20,7 @@ jobs:
       - name: Building JAR and moving JAR to specific folder
         run: |
           mvn --batch-mode --update-snapshots verify
-          run: mkdir staging && cp target/*.jar staging
+          mkdir staging && cp target/*.jar staging
 
       - name: Creating artifact with JAR file 
         uses: actions/upload-artifact@v3
