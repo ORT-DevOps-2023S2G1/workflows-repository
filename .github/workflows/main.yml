@@ -22,7 +22,7 @@ jobs:
       
       - name: Inspecting code with SonarCloud
         run: |
-          mvn clean verify -P sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=ort-devops-2023s2g1 -Dsonar.login=7eaad0924bf3589d0b34001cae2f5185e7112d05
+          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=ORT-DevOps-2023S2G1_orders-service -Dsonar.login=7eaad0924bf3589d0b34001cae2f5185e7112d05
 
       - name: Building JAR and moving JAR to specific folder
         run: |
