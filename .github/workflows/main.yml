@@ -5,7 +5,6 @@ on:
 
 env:
   POSTMAN_KEY: ${{ secrets.POSTMAN_API_KEY }}
-  NUEVO_SECRETO: ${{ secrets.NUEVO_SECRETO }} 
 
 jobs:
   build_job:
@@ -52,7 +51,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Run checqueo
         run: |
-          echo  ${{ env.NUEVO_SECRETO }} 
+          echo  ${{ secrets.POSTMAN_API_KEY }}
           echo  ${{ env.POSTMAN_KEY }} 
       # - name: Install Postman CLI
       #   run: |
