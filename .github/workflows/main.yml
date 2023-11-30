@@ -33,7 +33,7 @@ jobs:
       #  uses: ORT-DevOps-2023S2G1/manual-approval@develop
       #  with:
       #    secret: ${{ secrets.GITHUB_TOKEN }}
-      #    approvers: mgonzalezgallo
+      #    approvers: mgonzalezgallo, GonzaFernandez
 
       #- name: Creating artifact with JAR file 
       #  uses: actions/upload-artifact@v3
