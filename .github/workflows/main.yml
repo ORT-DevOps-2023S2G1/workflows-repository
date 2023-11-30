@@ -29,11 +29,11 @@ jobs:
       #    mvn --batch-mode --update-snapshots verify
       #    mkdir staging && cp target/*.jar staging
 
-      - name: Wait for approval
-        uses: ORT-DevOps-2023S2G1/manual-approval@develop
-        with:
-          secret: ${{ secrets.GITHUB_TOKEN }}
-          approvers: mgonzalezgallo
+      #- name: Wait for approval
+      #  uses: ORT-DevOps-2023S2G1/manual-approval@develop
+      #  with:
+      #    secret: ${{ secrets.GITHUB_TOKEN }}
+      #    approvers: mgonzalezgallo
 
       #- name: Creating artifact with JAR file 
       #  uses: actions/upload-artifact@v3
