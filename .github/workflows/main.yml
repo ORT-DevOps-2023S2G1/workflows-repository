@@ -29,8 +29,16 @@ jobs:
           mvn --batch-mode --update-snapshots verify
           mkdir staging && cp target/*.jar staging
 
-      - name: Creating artifact with JAR file 
-        uses: actions/upload-artifact@v3
+      - name: Wait for approval
+        uses: trstringer/manual-approval@v1
+        timeout-minutes: 2
         with:
-          name: Package
-          path: staging
+          secret: ${{ github.TOKEN }}
+          approvers: marcos
+          minimum-approvals: 1
+
+      #- name: Creating artifact with JAR file 
+      #  uses: actions/upload-artifact@v3
+      #  with:
+      #    name: Package
+      #    path: staging
