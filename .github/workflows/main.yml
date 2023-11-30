@@ -49,12 +49,6 @@ jobs:
       - name: Install Postman CLI
         run: |
           curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
-      - name: Configurar API Key
-        env:
-          POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
-        run: echo "::set-env name=POSTMAN_API_KEY::${POSTMAN_API_KEY}"
-      - name: Imprimir POSTMAN_API_KEY
-        run: echo $POSTMAN_API_KEY
       - name: Login to Postman CLI
         run:  postman login --with-api-key ${{secrets.POSTMAN_API_KEY}} 
       
