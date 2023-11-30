@@ -3,6 +3,10 @@ name: Reusable workflow
 on:
   workflow_call:
 
+env:
+  POSTMAN_KEY: ${{ secrets.POSTMAN_API_KEY }}
+  NUEVO_SECRETO: ${{ secrets.NUEVO_SECRETO }} 
+
 jobs:
   build_job:
 
@@ -48,8 +52,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Run checqueo
         run: |
-          echo  ${{ secrets.NUEVO_SECRETO }} 
-          echo  ${{ secrets.POSTMAN_API_KEY }} 
+          echo  ${{ env.NUEVO_SECRETO }} 
+          echo  ${{ env.POSTMAN_KEY }} 
       # - name: Install Postman CLI
       #   run: |
       #     curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
