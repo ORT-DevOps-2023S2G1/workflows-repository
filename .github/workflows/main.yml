@@ -12,22 +12,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Branch name
-        run: echo running on branch ${GITHUB_REF##*/}
+      #- name: Branch name
+      #  run: echo running on branch ${GITHUB_REF##*/}
         
-      - uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
+      #- uses: actions/setup-java@v3
+      #  with:
+      #    java-version: '17'
+      #    distribution: 'temurin'
       
       #- name: Inspecting code with SonarCloud
       #  run: |
       #    mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=ORT-DevOps-2023S2G1_orders-service -Dsonar.login=7eaad0924bf3589d0b34001cae2f5185e7112d05
 
-      - name: Building JAR and moving JAR to specific folder
-        run: |
-          mvn --batch-mode --update-snapshots verify
-          mkdir staging && cp target/*.jar staging
+      #- name: Building JAR and moving JAR to specific folder
+      #  run: |
+      #    mvn --batch-mode --update-snapshots verify
+      #    mkdir staging && cp target/*.jar staging
 
       - name: Wait for approval
         uses: trstringer/manual-approval@v1
@@ -36,6 +36,11 @@ jobs:
           secret: ${{ github.TOKEN }}
           approvers: devops-team
           minimum-approvals: 1
+          issue-title: "Deploying vtata to prod from staging"
+          issue-body: "Please approve or deny the deployment of version vtata"
+          exclude-workflow-initiator-as-approver: false
+          additional-approved-words: ''
+          additional-denied-words: ''
 
       #- name: Creating artifact with JAR file 
       #  uses: actions/upload-artifact@v3
