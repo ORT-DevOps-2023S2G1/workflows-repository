@@ -29,21 +29,35 @@ jobs:
       #    mvn --batch-mode --update-snapshots verify
       #    mkdir staging && cp target/*.jar staging
 
-      - name: Wait for approval
-        uses: trstringer/manual-approval@v1
-        timeout-minutes: 2
-        with:
-          secret: ${{ github.TOKEN }}
-          approvers: mgonzalezgallo
-          minimum-approvals: 1
-          issue-title: "Deploying vtata to prod from staging"
-          issue-body: "Please approve or deny the deployment of version vtata"
-          exclude-workflow-initiator-as-approver: false
-          additional-approved-words: ''
-          additional-denied-words: ''
+      # - name: Wait for approval
+      #   uses: trstringer/manual-approval@v1
+      #   timeout-minutes: 2
+      #   with:
+      #     secret: ${{ github.TOKEN }}
+      #     approvers: mgonzalezgallo
+      #     minimum-approvals: 1
+      #     issue-title: "Deploying vtata to prod from staging"
+      #     issue-body: "Please approve or deny the deployment of version vtata"
+      #     exclude-workflow-initiator-as-approver: false
+      #     additional-approved-words: ''
+      #     additional-denied-words: ''
 
       #- name: Creating artifact with JAR file 
       #  uses: actions/upload-artifact@v3
       #  with:
       #    name: Package
       #    path: staging
+
+  automated-api-tests:
+    runs-on: ubuntu-latest
+    name: Automated API tests using Postman CLI on Orders Service for development. 
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Postman CLI
+        run: |
+          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+      - name: Login to Postman CLI
+        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
+      - name: Run API tests
+        run: |
+          postman collection run "20374954-b83e3fa5-c71b-403d-ad0d-fc436c1eaeba" -e "20374954-0a9f6131-2403-4799-b062-189ad55c47de"
