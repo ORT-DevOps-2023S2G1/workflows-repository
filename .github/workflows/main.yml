@@ -3,8 +3,8 @@ name: Reusable workflow
 on:
   workflow_call:
 
-env:
-  POSTMAN_KEY: ${{ secrets.POSTMAN_API_KEY }}
+# env:
+#   POSTMAN_KEY: ${{ secrets.POSTMAN_API_KEY }}
 
 jobs:
   build_job:
@@ -48,17 +48,13 @@ jobs:
     runs-on:  ubuntu-22.04
     name: Automated API tests using Postman CLI. 
     steps:
-      - uses: actions/checkout@v4
-      - name: Run checqueo
+      - uses: actions/checkout@v4 
+      - name: Install Postman CLI
         run: |
-          echo  ${{ secrets.POSTMAN_API_KEY }}
-          echo  ${{ env.POSTMAN_KEY }} 
-      # - name: Install Postman CLI
-      #   run: |
-      #     curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
-      # - name: Login to Postman CLI
-      #   run:  postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }} 
+          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+      - name: Login to Postman CLI
+        run:  postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }} 
       
-      # - name: Run API tests
-      #   run: |
-      #     postman collection run "20374954-b83e3fa5-c71b-403d-ad0d-fc436c1eaeba" -e "20374954-0a9f6131-2403-4799-b062-189ad55c47de"
+      - name: Run API tests
+        run: |
+          postman collection run "20374954-b83e3fa5-c71b-403d-ad0d-fc436c1eaeba" -e "20374954-0a9f6131-2403-4799-b062-189ad55c47de"
