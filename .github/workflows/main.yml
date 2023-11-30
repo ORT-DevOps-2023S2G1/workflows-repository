@@ -30,7 +30,7 @@ jobs:
       #    mkdir staging && cp target/*.jar staging
 
       - name: Wait for approval
-        uses: ORT-DevOps-2023S2G1/manual-approval/action.yaml@develop
+        uses: ORT-DevOps-2023S2G1/manual-approval@develop
         with:
           secret: ${{ secrets.GITHUB_TOKEN }}
           approvers: mgonzalezgallo
