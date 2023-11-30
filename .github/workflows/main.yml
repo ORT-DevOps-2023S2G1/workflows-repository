@@ -20,9 +20,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       
-      - name: Inspecting code with SonarCloud
-        run: |
-          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=ORT-DevOps-2023S2G1_orders-service -Dsonar.login=7eaad0924bf3589d0b34001cae2f5185e7112d05
+      #- name: Inspecting code with SonarCloud
+      #  run: |
+      #    mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=ORT-DevOps-2023S2G1_orders-service -Dsonar.login=7eaad0924bf3589d0b34001cae2f5185e7112d05
 
       - name: Building JAR and moving JAR to specific folder
         run: |
@@ -34,7 +34,7 @@ jobs:
         timeout-minutes: 2
         with:
           secret: ${{ github.TOKEN }}
-          approvers: marcos
+          approvers: devops-team
           minimum-approvals: 1
 
       #- name: Creating artifact with JAR file 
