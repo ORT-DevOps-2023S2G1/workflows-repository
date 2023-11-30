@@ -47,7 +47,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run checqueo
-        run: echo  ${{ secrets.POSTMAN_API_KEY }} 
+        run: |
+          echo  ${{ secrets.NUEVO_SECRETO }} 
+          echo  ${{ secrets.POSTMAN_API_KEY }} 
       # - name: Install Postman CLI
       #   run: |
       #     curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
