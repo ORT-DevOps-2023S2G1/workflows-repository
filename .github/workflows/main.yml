@@ -1,10 +1,10 @@
 name: Reusable workflow
 
-permissions:
-  issues: write
-
 on:
   workflow_call:
+
+permissions:
+  issues: write
 
 jobs:
   build_job:
