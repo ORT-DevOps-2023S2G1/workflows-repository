@@ -1,5 +1,8 @@
 name: Reusable workflow
 
+permissions:
+  issues: write
+
 on:
   workflow_call:
 
