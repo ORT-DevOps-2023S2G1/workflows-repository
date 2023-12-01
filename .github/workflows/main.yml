@@ -1,17 +1,14 @@
-name: Reusable workflow
+name: CI Reusable workflow
 
 on:
   workflow_call:
-
-# env:
-#   POSTMAN_KEY: ${{ secrets.POSTMAN_API_KEY }}
 
 jobs:
   build_job:
 
     runs-on: ubuntu-22.04
     
-    name: Build JAR
+    name: Build Test and Release
     steps:
       - uses: actions/checkout@v4
 
@@ -32,29 +29,23 @@ jobs:
       #    mvn --batch-mode --update-snapshots verify
       #    mkdir staging && cp target/*.jar staging
 
-      #- name: Wait for approval
-      #  uses: ORT-DevOps-2023S2G1/manual-approval@develop
-      #  with:
-      #    secret: ${{ secrets.GITHUB_TOKEN }}
-      #    approvers: mgonzalezgallo, GonzaFernandez
-
       #- name: Creating artifact with JAR file 
       #  uses: actions/upload-artifact@v3
       #  with:
       #    name: Package
       #    path: staging
 
-  automated_api_tests_job:
-    runs-on:  ubuntu-22.04
-    name: Automated API tests using Postman CLI. 
-    steps:
-      - uses: actions/checkout@v4 
       - name: Install Postman CLI
-        run: |
-          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
-      - name: Login to Postman CLI
-        run:  postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }} 
+        run: curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
       
-      - name: Run API tests
-        run: |
-          postman collection run "20374954-b83e3fa5-c71b-403d-ad0d-fc436c1eaeba" -e "20374954-0a9f6131-2403-4799-b062-189ad55c47de"
+      # - name: Login to Postman CLI
+      #   run:  postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }} 
+      
+      - name: Run API tests using Postman CLI
+        run: postman collection run DevOps-ApiCollection.postman_collection.json
+
+      #- name: Wait for approval
+      #  uses: ORT-DevOps-2023S2G1/manual-approval@develop
+      #  with:
+      #    secret: ${{ secrets.GITHUB_TOKEN }}
+      #    approvers: mgonzalezgallo, GonzaFernandez
