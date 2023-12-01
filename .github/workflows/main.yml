@@ -9,6 +9,7 @@ env:
   REPOS_TOKEN: ${{ secrets.MG_TOKEN }}
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
+  GH_TOKEN: ${{ github.token }}
 
 jobs:
   build_test_release_job:
