@@ -4,7 +4,7 @@ on:
   workflow_call:
 
 jobs:
-  build_job:
+  build_test_release_job:
 
     runs-on: ubuntu-22.04
     
