@@ -34,8 +34,13 @@ jobs:
       #     ls staging
           
       - name: Building environment
-        if: github.repository != 'orders'
-        run: echo ${{ github.repository }}
+        if: github.repository == 'orders-service'
+        run: | 
+          gh repo clone ORT-DevOps-2023S2G1/payments-service
+          cd payments-service
+          mvn -B package
+
+          
 
 
       # - name: Install Postman CLI
