@@ -32,9 +32,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BASE_URL}}/products",
+					"raw": "http://localhost:8083/products",
 					"host": [
-						"{{BASE_URL}}"
+						"localhost"
 					],
 					"path": [
 						"products"
@@ -68,9 +68,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BASE_URL}}/products/123",
+					"raw": "http://localhost:8083/products/123",
 					"host": [
-						"{{BASE_URL}}"
+						"localhost"
 					],
 					"path": [
 						"products",
@@ -114,9 +114,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/orders",
+					"raw": "http://localhost:8080/orders",
 					"host": [
-						"{{BASE_URL}}"
+						"localhost"
 					],
 					"path": [
 						"orders"
@@ -150,9 +150,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BASE_URL}}/shipping/c",
+					"raw": "http://localhost:8082/shipping/c",
 					"host": [
-						"{{BASE_URL}}"
+						"localhost"
 					],
 					"path": [
 						"shipping",
@@ -187,9 +187,9 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{BASE_URL}}/shipping/{{shippingId}}",
+					"raw": "http://localhost:8082/shipping/{{shippingId}}",
 					"host": [
-						"{{BASE_URL}}"
+						"localhost"
 					],
 					"path": [
 						"shipping",
@@ -224,9 +224,9 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{BASE_URL}}/payments/{{orderId}}",
+					"raw": "http://localhost:8081/payments/{{orderId}}",
 					"host": [
-						"{{BASE_URL}}"
+						"localhost"
 					],
 					"path": [
 						"payments",
