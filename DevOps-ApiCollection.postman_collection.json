@@ -268,7 +268,7 @@
 	"variable": [
 		{
 			"key": "API_GATEWAY_IP",
-			"value": "172.17.0.3\n"
+			"value": "localhost\n"
 		}
 	]
 }
