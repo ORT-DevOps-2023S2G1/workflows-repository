@@ -3,8 +3,8 @@ name: CI Reusable workflow
 on:
   workflow_call:
 
-env:
-  TOKEN: ${{ secrets.MG_TOKEN }}
+# env:
+#   TOKEN: ${{ secrets.MG_TOKEN }}
 
 jobs:
   build_test_release_job:
@@ -44,9 +44,9 @@ jobs:
       # # - name: Login to Postman CLI
       # #   run:  postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }} 
 
-      - name: get file
-        run: |
-          curl -H "Authorization:token ${{ env.TOKEN }}" https://raw.githubusercontent.com/ORT-DevOps-2023S2G1/workflows-repository/DevOps-ApiCollection.postman_collection.json
+      # - name: get file
+      #   run: |
+      #     curl -H "Authorization:token ${{ env.TOKEN }}" https://raw.githubusercontent.com/ORT-DevOps-2023S2G1/workflows-repository/DevOps-ApiCollection.postman_collection.json
       
       # - name: Run API tests using Postman CLI
       #   run: postman collection run DevOps-ApiCollection.postman_collection.json
