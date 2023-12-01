@@ -10,7 +10,7 @@ env:
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
   GH_TOKEN: ${{ github.token }}
-  APP_ARGS: ${{ "http://localhost:8081 http://localhost:8082 http://localhost:8083" }}
+  APP_ARGS: 'http://localhost:8081 http://localhost:8082 http://localhost:8083'
 
 jobs:
   build_test_release_job:
@@ -39,7 +39,7 @@ jobs:
       - name: Building environment
         if: ${{ github.repository }} == 'orders-service'
         run: | 
-          java -jar staging/orders-service-example.jar ${{ APP_ARGS }} --server.port=8080
+          java -jar staging/orders-service-example.jar ${{ env.APP_ARGS }} --server.port=8080
           gh repo clone ORT-DevOps-2023S2G1/payments-service
           cd payments-service
           mvn -B package
