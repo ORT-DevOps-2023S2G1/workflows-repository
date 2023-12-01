@@ -31,6 +31,10 @@ jobs:
           mkdir staging && cp target/*.jar staging
           ls staging
           
+      - name: Building environment
+        if: github.repository_id != 'orders'
+        run: echo ${{ github.repository_id }}
+
 
       - name: Install Postman CLI
         run: curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
