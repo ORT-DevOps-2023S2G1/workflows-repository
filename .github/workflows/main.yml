@@ -35,7 +35,7 @@ jobs:
           
       - name: Building environment
         if: github.repository != 'orders'
-        run: echo ${{ github. }}
+        run: echo ${{ github.repository }}
 
 
       # - name: Install Postman CLI
