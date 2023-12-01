@@ -27,6 +27,8 @@ jobs:
         run: |
           mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=ORT-DevOps-2023S2G1_orders-service -Dsonar.login=7eaad0924bf3589d0b34001cae2f5185e7112d05
           ls
+          cd target
+          ls
 
       #- name: Building JAR and moving JAR to specific folder
       #  run: |
