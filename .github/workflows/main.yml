@@ -3,6 +3,9 @@ name: CI Reusable workflow
 on:
   workflow_call:
 
+env:
+  TOKEN: ${{ secrets.MG_TOKEN }}
+
 jobs:
   build_test_release_job:
 
@@ -12,8 +15,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      #- name: Branch name
-      #  run: echo running on branch ${GITHUB_REF##*/}
+     
+      - run: echo ${{ github }}
         
       #- uses: actions/setup-java@v3
       #  with:
@@ -35,14 +38,17 @@ jobs:
       #    name: Package
       #    path: staging
 
-      - name: Install Postman CLI
-        run: curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+      # - name: Install Postman CLI
+      #   run: curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
       
-      # - name: Login to Postman CLI
-      #   run:  postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }} 
+      # # - name: Login to Postman CLI
+      # #   run:  postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }} 
+
+      # - name: get file
+      #   run: curl -H "Authorization: token ${{ env.TOKEN }}" https://raw.githubusercontent.com/ORT-DevOps-2023S2G1/workflows-repository/DevOps-ApiCollection.postman_collection.json
       
-      - name: Run API tests using Postman CLI
-        run: postman collection run DevOps-ApiCollection.postman_collection.json
+      # - name: Run API tests using Postman CLI
+      #   run: postman collection run DevOps-ApiCollection.postman_collection.json
 
       #- name: Wait for approval
       #  uses: ORT-DevOps-2023S2G1/manual-approval@develop
