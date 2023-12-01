@@ -36,21 +36,21 @@ jobs:
         run: echo ${{ github.repository_id }}
 
 
-      - name: Install Postman CLI
-        run: curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+      # - name: Install Postman CLI
+      #   run: curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
 
-      - name: Login to Postman CLI
-        run:  postman login --with-api-key ${{ env.POSTMAN_API_KEY }}
+      # - name: Login to Postman CLI
+      #   run:  postman login --with-api-key ${{ env.POSTMAN_API_KEY }}
 
-      - name: Get JSON file with postman collection
-        run: |
-          curl -H 'Authorization: token ${{ env.REPOS_TOKEN }}' \
-          -H 'Accept: application/vnd.github.v4.raw' \
-          -O \
-          -L https://api.github.com/ORT-DevOps-2023S2G1/workflows-repository/DevOps-ApiCollection.postman_collection.json 
+      # - name: Get JSON file with postman collection
+      #   run: |
+      #     curl -H 'Authorization: token ${{ env.REPOS_TOKEN }}' \
+      #     -H 'Accept: application/vnd.github.v4.raw' \
+      #     -O \
+      #     -L https://api.github.com/ORT-DevOps-2023S2G1/workflows-repository/DevOps-ApiCollection.postman_collection.json 
               
-      - name: Run API tests using Postman CLI
-        run: postman collection run DevOps-ApiCollection.postman_collection.json
+      # - name: Run API tests using Postman CLI
+      #   run: postman collection run DevOps-ApiCollection.postman_collection.json
 
       # - name: Wait for approval
       #   uses: ORT-DevOps-2023S2G1/manual-approval@develop
