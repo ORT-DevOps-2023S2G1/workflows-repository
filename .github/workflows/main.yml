@@ -43,12 +43,12 @@ jobs:
           cd payments-service
           mvn -B package
           java -jar payments-service-example.jar --server.port=8081
-          cd -
+          cd ..
           gh repo clone ORT-DevOps-2023S2G1/products-service
           cd products-service
           mvn -B package
           java -jar products-service-example.jar --server.port=8083
-          cd -
+          cd ..
           gh repo clone ORT-DevOps-2023S2G1/shipping-service
           cd shipping-service
           mvn -B package
