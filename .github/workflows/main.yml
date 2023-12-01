@@ -3,6 +3,8 @@ name: CI Reusable workflow
 on:
   workflow_call:
 
+  workflow_dispatch:
+
 env:
   TOKEN: ${{ secrets.MG_TOKEN }}
 
