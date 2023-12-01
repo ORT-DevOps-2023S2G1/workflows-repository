@@ -25,10 +25,13 @@ jobs:
       
       - name: Building with Maven and Inspecting code with SonarCloud
         run: |
-          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.login=${{ env.SONAR_TOKEN }}  
+          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.token=${{ env.SONAR_TOKEN }}  
 
       - name: Moving JAR to specific folder
-        run: mkdir staging && cp target/*.jar staging
+        run: |
+          mkdir staging && cp target/*.jar staging
+          ls staging
+          
 
       - name: Install Postman CLI
         run: curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
