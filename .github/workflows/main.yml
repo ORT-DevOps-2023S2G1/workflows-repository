@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v4
 
      
-      - run: echo ${{ env.TOKEN }}
+      #- run: echo ${{ env.TOKEN }}
         
       #- uses: actions/setup-java@v3
       #  with:
@@ -46,10 +46,14 @@ jobs:
 
       - name: get file
         run: |
-          curl -H "Authorization:token ${{ env.TOKEN }}" https://raw.githubusercontent.com/ORT-DevOps-2023S2G1/workflows-repository/DevOps-ApiCollection.postman_collection.json
+          curl -H 'Authorization: token ${{ env.TOKEN }}' \
+          -H 'Accept: application/vnd.github.v4.raw' \
+          -O \
+          -L https://api.github.com/ORT-DevOps-2023S2G1/workflows-repository/DevOps-ApiCollection.postman_collection.json 
+          ls
       
-      # - name: Run API tests using Postman CLI
-      #   run: postman collection run DevOps-ApiCollection.postman_collection.json
+      - name: Run API tests using Postman CLI
+        run: postman collection run DevOps-ApiCollection.postman_collection.json
 
       #- name: Wait for approval
       #  uses: ORT-DevOps-2023S2G1/manual-approval@develop
