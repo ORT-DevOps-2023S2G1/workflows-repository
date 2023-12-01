@@ -46,4 +46,4 @@ jobs:
         uses: ORT-DevOps-2023S2G1/manual-approval@develop
         with:
           secret: ${{ secrets.GITHUB_TOKEN }}
-          approvers: mgonzalezgallo, GonzaFernandez
+          approvers: mgonzalezgallo
