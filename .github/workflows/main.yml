@@ -64,7 +64,6 @@ jobs:
         run: |
           curl -H 'Authorization: token ${{ env.REPOS_TOKEN }}' \
           -H 'Accept: application/vnd.github.v4.raw' \
-          -O \
           -L https://api.github.com/ORT-DevOps-2023S2G1/workflows-repository/DevOps-ApiCollection.postman_collection.json 
           cat DevOps-ApiCollection.postman_collection.json
           
