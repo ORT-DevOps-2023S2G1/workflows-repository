@@ -38,21 +38,21 @@ jobs:
       - name: Building environment
         if: ${{ github.repository }} == 'orders-service'
         run: | 
-          java -jar staging/orders-service-example.jar ${{ env.APP_ARGS }} --server.port=8080
+          java -jar staging/orders-service-example.jar ${{ env.APP_ARGS }} --server.port=8080 &
           gh repo clone ORT-DevOps-2023S2G1/payments-service
           cd payments-service
           mvn -B package
-          java -jar payments-service-example.jar --server.port=8081
+          java -jar payments-service-example.jar --server.port=8081 &
           cd ..
           gh repo clone ORT-DevOps-2023S2G1/products-service
           cd products-service
           mvn -B package
-          java -jar products-service-example.jar --server.port=8083
+          java -jar products-service-example.jar --server.port=8083 &
           cd ..
           gh repo clone ORT-DevOps-2023S2G1/shipping-service
           cd shipping-service
           mvn -B package
-          java -jar shipping-service-example.jar --server.port=8082
+          java -jar shipping-service-example.jar --server.port=8082 &
 
       # - name: Install Postman CLI
       #   run: curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
