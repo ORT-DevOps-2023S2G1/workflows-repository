@@ -18,7 +18,8 @@ jobs:
     name: Build Test and Release
     steps:
       - uses: actions/checkout@v4
-
+      
+      - run: echo ${{ github.repository }}
       # - uses: actions/setup-java@v3
       #   with:
       #     java-version: '17'
@@ -34,7 +35,7 @@ jobs:
       #     ls staging
           
       - name: Building environment
-        if: github.repository == 'orders-service'
+        if: ${{ github.repository }} == 'orders-service'
         run: | 
           gh repo clone ORT-DevOps-2023S2G1/payments-service
           cd payments-service
