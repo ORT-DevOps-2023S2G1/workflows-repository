@@ -32,28 +32,24 @@ jobs:
       #    mvn --batch-mode --update-snapshots verify
       #    mkdir staging && cp target/*.jar staging
 
-      #- name: Creating artifact with JAR file 
-      #  uses: actions/upload-artifact@v3
-      #  with:
-      #    name: Package
-      #    path: staging
-
       - name: Install Postman CLI
         run: curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
-      
-      # # - name: Login to Postman CLI
-      # #   run:  postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }} 
 
-      - name: get file
+      - name: Get JSON file with postman collection
         run: |
           curl -H 'Authorization: token ${{ env.TOKEN }}' \
           -H 'Accept: application/vnd.github.v4.raw' \
           -O \
           -L https://api.github.com/ORT-DevOps-2023S2G1/workflows-repository/DevOps-ApiCollection.postman_collection.json 
-          ls
-      
+              
       - name: Run API tests using Postman CLI
         run: postman collection run DevOps-ApiCollection.postman_collection.json
+
+      #- name: Creating artifact with JAR file 
+      #  uses: actions/upload-artifact@v3
+      #  with:
+      #    name: Package
+      #    path: staging
 
       #- name: Wait for approval
       #  uses: ORT-DevOps-2023S2G1/manual-approval@develop
