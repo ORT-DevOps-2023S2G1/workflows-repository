@@ -79,7 +79,7 @@ jobs:
 
       - name: Build the Docker image
         run: |
-          cat ${{ env.REPOS_TOKEN }} | docker login ghcr.io -u mgonzalezgallo --password-stdin
+          echo ${{ env.REPOS_TOKEN }} | docker login ghcr.io -u mgonzalezgallo --password-stdin
           docker build --build-arg JAR_FILE=staging/orders-service-example.jar -t ghcr.io/ort-devops-2023s2g1/orders-service-example:1 .
           docker images
           docker push ghcr.io/ort-devops-2023s2g1/orders-service-example:1
