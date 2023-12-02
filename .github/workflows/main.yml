@@ -79,8 +79,11 @@ jobs:
 
       - name: Build the Docker image
         run: |
-          docker build --build-arg JAR_FILE=staging/orders-service-example.jar -t orders-service-example:1 .
+          export CR_PAT= ${{ env.REPOS_TOKEN }}
+          echo $CR_PAT | docker login ghcr.io -u mgonzalezgallo --password-stdin
+          docker build --build-arg JAR_FILE=staging/orders-service-example.jar -t ghcr.io/ort-devops-2023s2g1/orders-service-example:1 .
           docker images
+          docker push ghcr.io/ort-devops-2023s2g1/orders-service-example:1
 
       # - name: Wait for approval
       #   uses: ORT-DevOps-2023S2G1/manual-approval@develop
