@@ -70,6 +70,10 @@ jobs:
       - name: Run API tests using Postman CLI
         run: postman collection run DevOps-ApiCollection.postman_collection.json
 
+      # - name: Build the Docker image
+      #   run: docker build --build-arg JAR_FILE=staging/orders-service-example.jar -t orders-service-example:1 .
+        
+
       # - name: Wait for approval
       #   uses: ORT-DevOps-2023S2G1/manual-approval@develop
       #   with:
