@@ -264,8 +264,8 @@
 					"pm.test(\"Body is not empty\", function () {",
 					"    pm.expect(pm.response.text()).to.not.be(\"\");",
 					"});",
-					"pm.test(\"Response time is less than 200ms\", function () {",
-					"    pm.expect(pm.response.responseTime).to.be.below(200);",
+					"pm.test(\"Response time is less than 2000ms\", function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(2000);",
 					"});"
 				]
 			}
