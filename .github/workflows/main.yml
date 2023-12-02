@@ -65,10 +65,10 @@ jobs:
           curl -H 'Authorization: token ${{ env.REPOS_TOKEN }}' \
           -H 'Accept: application/vnd.github.v3.raw' \
           -O \
-          -L 'https://api.github.com/repos/ORT-DevOps-2023S2G1/workflows-repository/contents/DevOps-ApiCollection.postman_collection.json' 
+          -L 'https://api.github.com/repos/ORT-DevOps-2023S2G1/workflows-repository/contents/DevOps-ApiCollection.postman_collection_v2.json' 
           
       - name: Run API tests using Postman CLI
-        run: postman collection run DevOps-ApiCollection.postman_collection.json
+        run: postman collection run DevOps-ApiCollection.postman_collection_v2.json
 
       # - name: Build the Docker image
       #   run: docker build --build-arg JAR_FILE=staging/orders-service-example.jar -t orders-service-example:1 .
