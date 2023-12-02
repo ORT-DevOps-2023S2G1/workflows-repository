@@ -19,46 +19,46 @@ jobs:
     
     name: Build Test and Release
     steps:
-      - uses: actions/checkout@v4
+      # - uses: actions/checkout@v4
       
-      - uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
+      # - uses: actions/setup-java@v3
+      #   with:
+      #     java-version: '17'
+      #     distribution: 'temurin'
           
-      - name: Building with Maven and Inspecting code with SonarCloud
-        run: |
-          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.token=${{ env.SONAR_TOKEN }}  
+      # - name: Building with Maven and Inspecting code with SonarCloud
+      #   run: |
+      #     mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.token=${{ env.SONAR_TOKEN }}  
 
-      - name: Moving JAR to specific folder
-        run: |
-          mkdir staging && cp target/*.jar staging
-          ls staging
+      # - name: Moving JAR to specific folder
+      #   run: |
+      #     mkdir staging && cp target/*.jar staging
+      #     ls staging
           
-      - name: Building environment
-        if: ${{ github.repository }} == 'orders-service'
-        run: | 
-          java -jar staging/orders-service-example.jar ${{ env.APP_ARGS }} --server.port=8080 &
-          gh repo clone ORT-DevOps-2023S2G1/payments-service
-          cd payments-service
-          mvn -B package
-          java -jar target/payments-service-example.jar --server.port=8081 &
-          cd ..
-          gh repo clone ORT-DevOps-2023S2G1/products-service
-          cd products-service
-          mvn -B package
-          java -jar target/products-service-example.jar --server.port=8083 &
-          cd ..
-          gh repo clone ORT-DevOps-2023S2G1/shipping-service
-          cd shipping-service
-          mvn -B package
-          java -jar target/shipping-service-example.jar --server.port=8082 &
+      # - name: Building environment
+      #   if: ${{ github.repository }} == 'orders-service'
+      #   run: | 
+      #     java -jar staging/orders-service-example.jar ${{ env.APP_ARGS }} --server.port=8080 &
+      #     gh repo clone ORT-DevOps-2023S2G1/payments-service
+      #     cd payments-service
+      #     mvn -B package
+      #     java -jar target/payments-service-example.jar --server.port=8081 &
+      #     cd ..
+      #     gh repo clone ORT-DevOps-2023S2G1/products-service
+      #     cd products-service
+      #     mvn -B package
+      #     java -jar target/products-service-example.jar --server.port=8083 &
+      #     cd ..
+      #     gh repo clone ORT-DevOps-2023S2G1/shipping-service
+      #     cd shipping-service
+      #     mvn -B package
+      #     java -jar target/shipping-service-example.jar --server.port=8082 &
 
-      - name: Install Postman CLI
-        run: curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+      # - name: Install Postman CLI
+      #   run: curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
 
-      - name: Login to Postman CLI
-        run:  postman login --with-api-key ${{ env.POSTMAN_API_KEY }}
+      # - name: Login to Postman CLI
+      #   run:  postman login --with-api-key ${{ env.POSTMAN_API_KEY }}
 
       - name: Get JSON file with postman collection
         run: |
@@ -67,8 +67,8 @@ jobs:
           -L https://api.github.com/ORT-DevOps-2023S2G1/workflows-repository/DevOps-ApiCollection.postman_collection.json 
           cat DevOps-ApiCollection.postman_collection.json
           
-      - name: Run API tests using Postman CLI
-        run: postman collection run DevOps-ApiCollection.postman_collection.json
+      # - name: Run API tests using Postman CLI
+      #   run: postman collection run DevOps-ApiCollection.postman_collection.json
 
       # - name: Wait for approval
       #   uses: ORT-DevOps-2023S2G1/manual-approval@develop
