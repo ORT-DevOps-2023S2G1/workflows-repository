@@ -36,6 +36,7 @@
 					"host": [
 						"localhost"
 					],
+					"port": "8083",
 					"path": [
 						"products"
 					]
@@ -72,6 +73,7 @@
 					"host": [
 						"localhost"
 					],
+					"port": "8083",
 					"path": [
 						"products",
 						"123"
@@ -118,6 +120,7 @@
 					"host": [
 						"localhost"
 					],
+					"port": "8080",
 					"path": [
 						"orders"
 					]
@@ -154,6 +157,7 @@
 					"host": [
 						"localhost"
 					],
+					"port": "8082",
 					"path": [
 						"shipping",
 						"c"
@@ -191,6 +195,7 @@
 					"host": [
 						"localhost"
 					],
+					"port": "8082",
 					"path": [
 						"shipping",
 						"{{shippingId}}"
@@ -228,6 +233,7 @@
 					"host": [
 						"localhost"
 					],
+					"port": "8081",
 					"path": [
 						"payments",
 						"{{orderId}}"
