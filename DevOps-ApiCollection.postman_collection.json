@@ -191,7 +191,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8082/shipping/{{shippingId}}",
+					"raw": "http://localhost:8082/shipping/d",
 					"host": [
 						"localhost"
 					],
