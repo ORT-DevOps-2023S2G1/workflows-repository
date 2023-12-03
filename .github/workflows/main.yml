@@ -104,12 +104,12 @@ jobs:
         run: |
           ls
 
-      # - name: Build the Docker image
-      #   run: |
-      #     echo ${{ env.REPOS_TOKEN }} | docker login ghcr.io -u mgonzalezgallo --password-stdin
-      #     docker build --build-arg JAR_FILE=${{ env.REPO_NAME }}-example.jar -t ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.sha }} .
-      #     docker images
-      #     docker push ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.sha }}
+      - name: Build the Docker image
+        run: |
+          echo ${{ env.REPOS_TOKEN }} | docker login ghcr.io -u mgonzalezgallo --password-stdin
+          docker build --build-arg JAR_FILE=${{ env.REPO_NAME }}-example.jar -t ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.sha }} . --file no_args_dockerfile
+          docker images
+          docker push ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.sha }}
 
       
   build_push_docker_image_without_args:
@@ -128,10 +128,15 @@ jobs:
           -O \
           -L 'https://api.github.com/repos/ORT-DevOps-2023S2G1/workflows-repository/contents/Dockerfile'
 
+      - name: Download artifact with JAR file
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ env.REPO_NAME }}-JAR-${{ github.sha }}
+          
       # - name: Build the Docker image
       #   run: |
       #     echo ${{ env.REPOS_TOKEN }} | docker login ghcr.io -u mgonzalezgallo --password-stdin
-      #     docker build --build-arg JAR_FILE=target/${{ env.REPO_NAME }}-example.jar -t ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.sha }} .
+      #     docker build --build-arg JAR_FILE=${{ env.REPO_NAME }}-example.jar -t ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.sha }} . 
       #     docker images
       #     docker push ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.sha }}
     
