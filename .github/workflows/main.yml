@@ -27,14 +27,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           
-      # - name: Building with Maven and Inspecting code with SonarCloud
-      #   run: |
-      #     mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.token=${{ env.SONAR_TOKEN }}  
-
-      # - name: Moving JAR to specific folder
-      #   run: |
-      #     mkdir staging && cp target/${{ env.REPO_NAME }}-example.jar staging
-      #     ls staging
+      - name: Building with Maven and Inspecting code with SonarCloud
+        run: |
+          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.token=${{ env.SONAR_TOKEN }}  
 
       # - name: Building environment
       #   run: | 
@@ -74,6 +69,16 @@ jobs:
       #     secret: ${{ secrets.GITHUB_TOKEN }}
       #     approvers: mgonzalezgallo
 
+      - name: Upload Artifact with JAR file
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.REPO_NAME }}-JAR-${{ github.sha }}
+          path: target/${{ env.REPO_NAME }}-example.jar
+
+      - name: chequeos
+        run: |
+          ls
+
   build_push_docker_image_with_args:
     needs: build_test_release_job
     if: github.event.repository.name == 'orders-service'
@@ -90,10 +95,19 @@ jobs:
           -O \
           -L 'https://api.github.com/repos/ORT-DevOps-2023S2G1/workflows-repository/contents/Dockerfile'
 
+      - name: Download artifact with JAR file
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ env.REPO_NAME }}-JAR-${{ github.sha }}
+
+      - name: chequeo
+        run: |
+          ls
+
       # - name: Build the Docker image
       #   run: |
       #     echo ${{ env.REPOS_TOKEN }} | docker login ghcr.io -u mgonzalezgallo --password-stdin
-      #     docker build --build-arg JAR_FILE=target/${{ env.REPO_NAME }}-example.jar -t ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.sha }} .
+      #     docker build --build-arg JAR_FILE=${{ env.REPO_NAME }}-example.jar -t ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.sha }} .
       #     docker images
       #     docker push ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.sha }}
 
