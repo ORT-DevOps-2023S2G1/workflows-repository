@@ -98,5 +98,26 @@ jobs:
       #     docker push ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.sha }}
 
       
-  
+  build_push_docker_image_without_args:
+    needs: build_test_release_job
+    if: github.event.repository.name != 'orders-service'
+    
+    runs-on: ubuntu-22.04
+    
+    name: Build Docker Image without args
+    steps:
+      
+      - name: Get Dockerfile
+        run: |
+          curl -H 'Authorization: token ${{ env.REPOS_TOKEN }}' \
+          -H 'Accept: application/vnd.github.v3.raw' \
+          -O \
+          -L 'https://api.github.com/repos/ORT-DevOps-2023S2G1/workflows-repository/contents/Dockerfile'
+
+      # - name: Build the Docker image
+      #   run: |
+      #     echo ${{ env.REPOS_TOKEN }} | docker login ghcr.io -u mgonzalezgallo --password-stdin
+      #     docker build --build-arg JAR_FILE=target/${{ env.REPO_NAME }}-example.jar -t ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.sha }} .
+      #     docker images
+      #     docker push ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.sha }}
     
