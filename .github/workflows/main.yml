@@ -76,7 +76,7 @@ jobs:
 
   build_push_docker_image_with_args:
     needs: build_test_release_job
-    if: env.REPO_NAME == 'orders-service'
+    if: github.event.repository.name == 'orders-service'
     
     runs-on: ubuntu-22.04
     
