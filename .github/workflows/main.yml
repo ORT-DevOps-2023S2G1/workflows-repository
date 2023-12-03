@@ -27,18 +27,19 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           
-      - name: Building with Maven and Inspecting code with SonarCloud
-        run: |
-          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.token=${{ env.SONAR_TOKEN }}  
+      # - name: Building with Maven and Inspecting code with SonarCloud
+      #   run: |
+      #     mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.token=${{ env.SONAR_TOKEN }}  
 
-      - name: Moving JAR to specific folder
-        run: |
-          mkdir staging && cp target/${{ env.REPO_NAME }}-example.jar staging
-          ls staging
+      # - name: Moving JAR to specific folder
+      #   run: |
+      #     mkdir staging && cp target/${{ env.REPO_NAME }}-example.jar staging
+      #     ls staging
 
-      # - name: Building environment
-      #     if: ${{ github.event.repository.name }} !== 'orders-service'
-      #     run: |
+      - name: Building environment
+        if: ${{ env.REPO_NAME }} != 'orders-service'
+        run: |
+          echo "entró en el if"
       #       gh repo clone ORT-DevOps-2023S2G1/payments-service
       
         
