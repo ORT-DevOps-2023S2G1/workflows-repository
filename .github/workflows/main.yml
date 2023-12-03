@@ -76,7 +76,7 @@ jobs:
 
   build_push_docker_image_with_args:
     needs: build_test_release_job
-    if: ${{ env.REPO_NAME }} == 'orders-service'
+    if: env.REPO_NAME == 'orders-service'
     
     runs-on: ubuntu-22.04
     
@@ -90,12 +90,12 @@ jobs:
           -O \
           -L 'https://api.github.com/repos/ORT-DevOps-2023S2G1/workflows-repository/contents/Dockerfile'
 
-      - name: Build the Docker image
-        run: |
-          echo ${{ env.REPOS_TOKEN }} | docker login ghcr.io -u mgonzalezgallo --password-stdin
-          docker build --build-arg JAR_FILE=target/${{ env.REPO_NAME }}-example.jar -t ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.sha }} .
-          docker images
-          docker push ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.sha }}
+      # - name: Build the Docker image
+      #   run: |
+      #     echo ${{ env.REPOS_TOKEN }} | docker login ghcr.io -u mgonzalezgallo --password-stdin
+      #     docker build --build-arg JAR_FILE=target/${{ env.REPO_NAME }}-example.jar -t ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.sha }} .
+      #     docker images
+      #     docker push ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.sha }}
 
       
   
