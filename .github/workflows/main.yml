@@ -27,29 +27,29 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           
-      - name: Building with Maven and Inspecting code with SonarCloud
-        run: |
-          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.token=${{ env.SONAR_TOKEN }}  
+      # - name: Building with Maven and Inspecting code with SonarCloud
+      #   run: |
+      #     mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.token=${{ env.SONAR_TOKEN }}  
 
       # - name: Moving JAR to specific folder
       #   run: |
       #     mkdir staging && cp target/${{ env.REPO_NAME }}-example.jar staging
       #     ls staging
 
-      - name: Building environment
-        run: | 
-          gh repo clone ORT-DevOps-2023S2G1/orders-service
-          mvn -f orders-service/ -B package
-          java -jar orders-service/target/orders-service-example.jar ${{ env.APP_ARGS }} --server.port=8080 &
-          gh repo clone ORT-DevOps-2023S2G1/payments-service
-          mvn -f payments-service/ -B package
-          java -jar payments-service/target/payments-service-example.jar --server.port=8081 &
-          gh repo clone ORT-DevOps-2023S2G1/shipping-service
-          mvn -f shipping-service/ -B package
-          java -jar shipping-service/target/shipping-service-example.jar --server.port=8082 &
-          gh repo clone ORT-DevOps-2023S2G1/products-service
-          mvn -f products-service/ -B package
-          java -jar products-service/target/products-service-example.jar --server.port=8083 &
+      # - name: Building environment
+      #   run: | 
+      #     gh repo clone ORT-DevOps-2023S2G1/orders-service
+      #     mvn -f orders-service/ -B package
+      #     java -jar orders-service/target/orders-service-example.jar ${{ env.APP_ARGS }} --server.port=8080 &
+      #     gh repo clone ORT-DevOps-2023S2G1/payments-service
+      #     mvn -f payments-service/ -B package
+      #     java -jar payments-service/target/payments-service-example.jar --server.port=8081 &
+      #     gh repo clone ORT-DevOps-2023S2G1/shipping-service
+      #     mvn -f shipping-service/ -B package
+      #     java -jar shipping-service/target/shipping-service-example.jar --server.port=8082 &
+      #     gh repo clone ORT-DevOps-2023S2G1/products-service
+      #     mvn -f products-service/ -B package
+      #     java -jar products-service/target/products-service-example.jar --server.port=8083 &
 
 
       # - name: Install Postman CLI
@@ -68,6 +68,21 @@ jobs:
       # - name: Run API tests using Postman CLI
       #   run: postman collection run DevOps-ApiCollection.postman_collection_v2.json
 
+      # - name: Wait for approval
+      #   uses: ORT-DevOps-2023S2G1/manual-approval@develop
+      #   with:
+      #     secret: ${{ secrets.GITHUB_TOKEN }}
+      #     approvers: mgonzalezgallo
+
+  build_push_docker_image_with_args:
+    needs: build_test_release_job
+    if: ${{ env.REPO_NAME }} == 'orders-service'
+    
+    runs-on: ubuntu-22.04
+    
+    name: Build Docker Image with args
+    steps:
+      
       - name: Get Dockerfile
         run: |
           curl -H 'Authorization: token ${{ env.REPOS_TOKEN }}' \
@@ -82,8 +97,6 @@ jobs:
           docker images
           docker push ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.sha }}
 
-      # - name: Wait for approval
-      #   uses: ORT-DevOps-2023S2G1/manual-approval@develop
-      #   with:
-      #     secret: ${{ secrets.GITHUB_TOKEN }}
-      #     approvers: mgonzalezgallo
+      
+  
+    
