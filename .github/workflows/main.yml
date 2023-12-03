@@ -103,7 +103,7 @@ jobs:
       - name: chequeo
         run: |
           ls
-          cat Dockerfile_no_args
+          cat Dockerfile_args
 
       - name: Build the Docker image
         run: |
