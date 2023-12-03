@@ -39,7 +39,7 @@ jobs:
       - name: Building environment
         run: | 
           gh repo clone ORT-DevOps-2023S2G1/orders-service
-          mvn -f /orders-service -B package
+          mvn -f orders-service/ -B package
           
           # java -jar staging/${{ env.REPO_NAME }}-example.jar ${{ env.APP_ARGS }} --server.port=8080 &
           # gh repo clone ORT-DevOps-2023S2G1/payments-service
