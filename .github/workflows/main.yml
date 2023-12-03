@@ -107,7 +107,7 @@ jobs:
       - name: Build the Docker image
         run: |
           echo ${{ env.REPOS_TOKEN }} | docker login ghcr.io -u mgonzalezgallo --password-stdin
-          docker build --build-arg JAR_FILE=${{ env.REPO_NAME }}-example.jar -t ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.sha }} . --file no_args_dockerfile
+          docker build --build-arg JAR_FILE=${{ env.REPO_NAME }}-example.jar -t ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.sha }} . --file Dockerfile_args
           docker images
           docker push ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.sha }}
 
