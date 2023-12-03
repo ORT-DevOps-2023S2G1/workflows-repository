@@ -18,7 +18,7 @@
 							"    pm.response.to.have.status(200);\r",
 							"})\r",
 							"pm.test(\"Body is not empty\", function () {\r",
-							"    pm.expect(pm.response.text()).not.equal(\"\");\r",
+							"    pm.response.text() != \"\";\r",
 							"});\r",
 							"pm.test(\"Response time is less than 2000ms\", function () {\r",
 							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
