@@ -28,7 +28,7 @@ jobs:
           
       - name: Building with Maven and Inspecting code with SonarCloud
         run: |
-          echo "este es el repo ${{ github.repository }}" 
+          echo "este es el repo ${{ ${{ github.event.repository.name }} }}" 
       #     mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.token=${{ env.SONAR_TOKEN }}  
 
       # - name: Moving JAR to specific folder
