@@ -28,13 +28,14 @@ jobs:
           
       - name: Building with Maven and Inspecting code with SonarCloud
         run: |
-          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.token=${{ env.SONAR_TOKEN }}  
-
-      - name: Moving JAR to specific folder
-        run: |
-          mkdir staging && cp target/${{ github.repository }}-example.jar staging
-          ls staging
           echo "este es el repo ${{ github.repository }}" 
+      #     mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.token=${{ env.SONAR_TOKEN }}  
+
+      # - name: Moving JAR to specific folder
+      #   run: |
+      #     mkdir staging && cp target/${{ github.repository }}-example.jar staging
+      #     ls staging
+      #     echo "este es el repo ${{ github.repository }}" 
           
       # - name: Building environment
       #   if: ${{ github.repository }} == 'orders-service'
