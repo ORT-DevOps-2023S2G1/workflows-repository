@@ -25,8 +25,8 @@ jobs:
       - name: Chequeos
         run: |
           ls
-          echo "ls en build"
-          ls build/
+          echo "ls en dist"
+          ls dist/
           
 
       # - name: Upload to S3
