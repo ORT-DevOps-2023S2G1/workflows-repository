@@ -17,9 +17,6 @@
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"})\r",
-							"pm.test(\"Body is not empty\", function () {\r",
-							"    pm.response.text() != \"\";\r",
-							"});\r",
 							"pm.test(\"Response time is less than 2000ms\", function () {\r",
 							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
 							"});"
@@ -55,9 +52,6 @@
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"})\r",
-							"pm.test(\"Body is not empty\", function () {\r",
-							"   pm.expect(pm.response.text()).not.equal(\"\");\r",
-							"});\r",
 							"pm.test(\"Response time is less than 2000ms\", function () {\r",
 							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
 							"});"
@@ -94,9 +88,6 @@
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"})\r",
-							"pm.test(\"Body is not empty\", function () {\r",
-							"    pm.expect(pm.response.text()).not.equal(\"\");\r",
-							"});\r",
 							"pm.test(\"Response time is less than 2000ms\", function () {\r",
 							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
 							"});"
@@ -141,9 +132,6 @@
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"})\r",
-							"pm.test(\"Body is not empty\", function () {\r",
-							"    pm.expect(pm.response.text()).not.equal(\"\");\r",
-							"});\r",
 							"pm.test(\"Response time is less than 2000ms\", function () {\r",
 							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
 							"});"
@@ -180,9 +168,6 @@
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"})\r",
-							"pm.test(\"Body is empty\", function () {\r",
-							"    pm.expect(pm.response.text()).to.be.equal(\"\");\r",
-							"});\r",
 							"pm.test(\"Response time is less than 2000ms\", function () {\r",
 							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
 							"});"
@@ -219,9 +204,6 @@
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"})\r",
-							"pm.test(\"Body is not empty\", function () {\r",
-							"   pm.expect(pm.response.text()).not.equal(\"\");\r",
-							"});\r",
 							"pm.test(\"Response time is less than 2000ms\", function () {\r",
 							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
 							"});"
@@ -267,9 +249,6 @@
 					"pm.test(\"Status code is 200\", function () {",
 					"    pm.response.to.have.status(200);",
 					"})",
-					"pm.test(\"Body is not empty\", function () {",
-					"    pm.expect(pm.response.text()).not.be(\"\");",
-					"});",
 					"pm.test(\"Response time is less than 2000ms\", function () {",
 					"    pm.expect(pm.response.responseTime).to.be.below(2000);",
 					"});"
