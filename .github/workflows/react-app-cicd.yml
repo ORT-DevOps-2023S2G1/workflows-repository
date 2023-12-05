@@ -30,6 +30,12 @@ jobs:
           ls
           echo "ls en dist"
           ls dist/
+
+      - name: Upload Artifact with JAR file
+        uses: actions/upload-artifact@v3
+        with:
+          name: "pagina"
+          path: dist/
           
 
       # - name: Upload to S3
