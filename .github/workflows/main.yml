@@ -106,7 +106,6 @@ jobs:
 
       - name: Push image to AWS ECR
         run: |
-          curl -i -H "Authorization: Basic $AWS_SESSION_TOKEN" https://637483454218.dkr.ecr.us-east-1.amazonaws.com/v2/amazonlinux/tags/list
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637483454218.dkr.ecr.us-east-1.amazonaws.com
           docker build --build-arg JAR_FILE=${{ env.REPO_NAME }}-example.jar aws-ecr-{{ env.REPO_NAME }}
           docker tag aws-ecr-orders-service:latest 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-{{ env.REPO_NAME }}:${{ github.run_id }}
