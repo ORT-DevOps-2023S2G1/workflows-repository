@@ -115,7 +115,7 @@ jobs:
       - name: Push image to AWS ECR
         run: |
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637483454218.dkr.ecr.us-east-1.amazonaws.com
-          docker build --build-arg JAR_FILE=${{ env.REPO_NAME }}-example.jar aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }} . --file Dockerfile_args
+          docker build --build-arg JAR_FILE=${{ env.REPO_NAME }}-example.jar -t aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }} . --file Dockerfile_args
           docker tag aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }} 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}
           docker push 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}
           
