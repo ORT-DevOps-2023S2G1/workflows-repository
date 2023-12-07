@@ -104,6 +104,14 @@ jobs:
           
           #docker push ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.run_id }}
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          aws-access-key-id: ${{ AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ AWS_SESSION_TOKEN }}
+
       - name: Push image to AWS ECR
         run: |
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637483454218.dkr.ecr.us-east-1.amazonaws.com
