@@ -97,14 +97,20 @@ jobs:
         with:
           name: ${{ env.REPO_NAME }}-JAR-${{ github.run_id }}
 
-      - name: Build the Docker image
-        run: |
-          echo ${{ env.REPOS_TOKEN }} | docker login ghcr.io -u mgonzalezgallo --password-stdin
-          docker build --build-arg JAR_FILE=${{ env.REPO_NAME }}-example.jar -t ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.run_id }} . --file Dockerfile_args
-          docker images
-          docker push ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.run_id }}
+      #- name: Build the Docker image
+        #run: |
+          #echo ${{ env.REPOS_TOKEN }} | docker login ghcr.io -u mgonzalezgallo --password-stdin
+          #docker build --build-arg JAR_FILE=${{ env.REPO_NAME }}-example.jar aws-ecr-{{ env.REPO_NAME }}
+          
+          #docker push ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.run_id }}
 
-      
+      - name: Push image to AWS ECR
+        run: |
+          aws ecr get-login-password --region us-east-1 | docker login --mgonzalezgallo AWS --password-stdin 637483454218.dkr.ecr.us-east-1.amazonaws.com
+          docker build --build-arg JAR_FILE=${{ env.REPO_NAME }}-example.jar aws-ecr-{{ env.REPO_NAME }}
+          docker tag aws-ecr-orders-service:latest 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-{{ env.REPO_NAME }}:${{ github.run_id }}
+          docker push 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-{{ env.REPO_NAME }}:latest
+          
   build_push_docker_image_without_args:
     needs: build_test_release_job
     if: github.event.repository.name != 'orders-service'
