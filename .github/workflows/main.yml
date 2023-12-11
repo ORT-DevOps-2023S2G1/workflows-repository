@@ -112,7 +112,6 @@ jobs:
           docker tag aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }} 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:latest
           docker push 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:latest
 
-
           
   build_push_docker_image_without_args:
     needs: build_test_release_job
@@ -149,4 +148,6 @@ jobs:
           docker build --build-arg JAR_FILE=${{ env.REPO_NAME }}-example.jar -t aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }} . --file Dockerfile_no_args
           docker tag aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }} 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}
           docker push 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}
-          
+          docker tag aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }} 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:latest
+          docker push 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:latest
+        
