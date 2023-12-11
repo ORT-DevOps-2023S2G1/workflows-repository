@@ -27,37 +27,44 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
 
-      - name: Wait for approval
-        uses: ORT-DevOps-2023S2G1/manual-approval@develop
-        with:
-          secret: ${{ secrets.GITHUB_TOKEN }}
-          approvers: mgonzalezgallo
-          issue-title: "Deploying on DEV environment"
-          issue-body: "Please approve or deny the deployment"
+      # - name: Wait for approval
+      #   uses: ORT-DevOps-2023S2G1/manual-approval@develop
+      #   with:
+      #     secret: ${{ secrets.GITHUB_TOKEN }}
+      #     approvers: mgonzalezgallo
+      #     issue-title: "Deploying on DEV environment"
+      #     issue-body: "Please approve or deny the deployment"
 
       - name: Deploy on DEV environment
-        run: aws ecs update-service --cluster ort-cluster-dev --service ${{github.event.repository.name}}-dev --force-new-deployment
+        run: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637483454218.dkr.ecr.us-east-1.amazonaws.com
+          TASK_DEFINITION=$(aws ecs describe-task-definition — task-definition ${{ github.event.repository.name }}-td-dev — region=”us-east-1")
+          echo $ TASK_DEFINITION | jq ‘.containerDefinitions[0].image=’\”run_id }} 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github\” \ > task-def.json
+          aws ecs register-task-definition — family ${{ github.event.repository.name }}-td-dev — region=”us-east-1" — cli-input-json file://task-def.json
+          aws ecs update-service --cluster ort-cluster-dev --service ${{github.event.repository.name}}-dev --force-new-deployment
 
-      - name: Wait for approval
-        uses: ORT-DevOps-2023S2G1/manual-approval@develop
-        with:
-          secret: ${{ secrets.GITHUB_TOKEN }}
-          approvers: mgonzalezgallo
-          issue-title: "Deploying on STG environment"
-          issue-body: "Please approve or deny the deployment"
+      # - name: Wait for approval
+      #   uses: ORT-DevOps-2023S2G1/manual-approval@develop
+      #   with:
+      #     secret: ${{ secrets.GITHUB_TOKEN }}
+      #     approvers: mgonzalezgallo
+      #     issue-title: "Deploying on STG environment"
+      #     issue-body: "Please approve or deny the deployment"
 
-      - name: Deploy on STG environment
-        run: aws ecs update-service --cluster ort-cluster-stg --service ${{github.event.repository.name}}-stg --force-new-deployment
+      # - name: Deploy on STG environment
+      #   run: aws ecs update-service --cluster ort-cluster-stg --service ${{github.event.repository.name}}-stg --force-new-deployment
 
-      - name: Wait for approval
-        uses: ORT-DevOps-2023S2G1/manual-approval@develop
-        with:
-          secret: ${{ secrets.GITHUB_TOKEN }}
-          approvers: mgonzalezgallo
-          issue-title: "Deploying on PRD environment"
-          issue-body: "Please approve or deny the deployment"
+      # - name: Wait for approval
+      #   uses: ORT-DevOps-2023S2G1/manual-approval@develop
+      #   with:
+      #     secret: ${{ secrets.GITHUB_TOKEN }}
+      #     approvers: mgonzalezgallo
+      #     issue-title: "Deploying on PRD environment"
+      #     issue-body: "Please approve or deny the deployment"
           
-      - name: Deploy on PRD environment
-        run: aws ecs update-service --cluster ort-cluster-prd --service ${{github.event.repository.name}}-prd --force-new-deployment
+      # - name: Deploy on PRD environment
+      #   run: |
+          
+      #     aws ecs update-service --cluster ort-cluster-prd --service ${{github.event.repository.name}}-prd --force-new-deployment
 
 
