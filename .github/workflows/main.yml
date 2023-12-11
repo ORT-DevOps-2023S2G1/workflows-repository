@@ -95,13 +95,6 @@ jobs:
         with:
           name: ${{ env.REPO_NAME }}-JAR-${{ github.run_id }}
 
-      #- name: Build the Docker image
-        #run: |
-          #echo ${{ env.REPOS_TOKEN }} | docker login ghcr.io -u mgonzalezgallo --password-stdin
-          #docker build --build-arg JAR_FILE=${{ env.REPO_NAME }}-example.jar aws-ecr-{{ env.REPO_NAME }}
-          
-          #docker push ghcr.io/ort-devops-2023s2g1/${{ env.REPO_NAME }}-example:${{ github.run_id }}
-
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -116,6 +109,10 @@ jobs:
           docker build --build-arg JAR_FILE=${{ env.REPO_NAME }}-example.jar -t aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }} . --file Dockerfile_args
           docker tag aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }} 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}
           docker push 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}
+          docker tag aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }} 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:latest
+          docker push 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}
+
+
           
   build_push_docker_image_without_args:
     needs: build_test_release_job
