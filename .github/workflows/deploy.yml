@@ -19,5 +19,45 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: chequeos
-        run: echo "nada por ahora"
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+
+      - name: Wait for approval
+        uses: ORT-DevOps-2023S2G1/manual-approval@develop
+        with:
+          secret: ${{ secrets.GITHUB_TOKEN }}
+          approvers: mgonzalezgallo
+          issue-title: "Deploying on DEV environment"
+          issue-body: "Please approve or deny the deployment"
+
+      - name: Deploy on DEV environment
+        run: aws ecs update-service --cluster ort-cluster-dev --service ${{github.event.repository.name}}-dev --force-new-deployment
+
+      - name: Wait for approval
+        uses: ORT-DevOps-2023S2G1/manual-approval@develop
+        with:
+          secret: ${{ secrets.GITHUB_TOKEN }}
+          approvers: mgonzalezgallo
+          issue-title: "Deploying on STG environment"
+          issue-body: "Please approve or deny the deployment"
+
+      - name: Deploy on STG environment
+        run: aws ecs update-service --cluster ort-cluster-stg --service ${{github.event.repository.name}}-stg --force-new-deployment
+
+      - name: Wait for approval
+        uses: ORT-DevOps-2023S2G1/manual-approval@develop
+        with:
+          secret: ${{ secrets.GITHUB_TOKEN }}
+          approvers: mgonzalezgallo
+          issue-title: "Deploying on PRD environment"
+          issue-body: "Please approve or deny the deployment"
+          
+      - name: Deploy on PRD environment
+        run: aws ecs update-service --cluster ort-cluster-prd --service ${{github.event.repository.name}}-prd --force-new-deployment
+
+
