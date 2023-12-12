@@ -68,8 +68,7 @@ jobs:
           cat task-def.json
           jq -r '.containerDefinitions[]' text.json >> task1-def.json
           cat task1-def.json
-          
-        #aws ecs register-task-definition --family ${{ github.event.repository.name }}-td-dev --container-definitions file//:task-def.json
+          aws ecs register-task-definition --family ${{ github.event.repository.name }}-td-dev --container-definitions file//:task1-def.json
         
         
         # echo "register"
