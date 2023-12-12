@@ -49,13 +49,13 @@ jobs:
           container-name: orders
           image: "637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}
 
-       - name: Deploy Amazon ECS task definition
-          uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-          with:
-            task-definition: ${{ github.event.repository.name }}-td-dev
-            service: ${{github.event.repository.name}}-dev
-            cluster: ort-cluster-dev
-            wait-for-service-stability: true
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ github.event.repository.name }}-td-dev
+          service: ${{github.event.repository.name}}-dev
+          cluster: ort-cluster-dev
+          wait-for-service-stability: true
           
         # jq '.containerDefinitions[0].image='\"637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}\" text.json >> task-def.json 
         # echo "register"
