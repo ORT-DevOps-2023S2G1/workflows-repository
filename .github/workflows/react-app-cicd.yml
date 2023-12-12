@@ -54,9 +54,10 @@ jobs:
 
       - name: prueba
         run: |
+          echo "todo"
           ls
-          echo "dist"
-          ls build/
+          echo "cosas en dist"
+          ls dist/
           
       # - name: Configure AWS Credentials
       #   uses: aws-actions/configure-aws-credentials@v4
