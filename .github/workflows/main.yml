@@ -34,6 +34,12 @@ jobs:
           mvn release:clean
           ls -la
 
+      - name: Building with Maven
+        run: |
+          ls -la
+          echo "carpeta .mvn" 
+          ls /mvn
+
       # - name: Building environment
       #   run: | 
       #     gh repo clone ORT-DevOps-2023S2G1/orders-service
