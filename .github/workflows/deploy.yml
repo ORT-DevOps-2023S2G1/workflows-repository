@@ -39,12 +39,12 @@ jobs:
         run: |
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637483454218.dkr.ecr.us-east-1.amazonaws.com
           echo "${{ github.event.repository.name }}-td-dev"
-          TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition olas —-region="us-east-1")
+          TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition ${{ github.event.repository.name }}-td-dev)
           echo $TASK_DEFINITION
           echo $TASK_DEFINITION | jq '.containerDefinitions[0].image='\"637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}\" \ > task-def.json
-          #aws ecs register-task-definition —-family ${{ github.event.repository.name }}-td-dev —-region=”us-east-1" —-cli-input-json file://task-def.json
-          #aws ecs update-service --cluster ort-cluster-dev --service ${{github.event.repository.name}}-dev --force-new-deployment
-          #"${{ github.event.repository.name }}-td-dev"
+          aws ecs register-task-definition —-family ${{ github.event.repository.name }}-td-dev —-region="us-east-1" —-cli-input-json file://task-def.json
+          aws ecs update-service --cluster ort-cluster-dev --service ${{github.event.repository.name}}-dev --force-new-deployment
+   
           
       # - name: Wait for approval
       #   uses: ORT-DevOps-2023S2G1/manual-approval@develop
