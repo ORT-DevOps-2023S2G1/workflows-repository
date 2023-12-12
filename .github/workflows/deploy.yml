@@ -35,19 +35,22 @@ jobs:
       #     issue-title: "Deploying on DEV environment"
       #     issue-body: "Please approve or deny the deployment"
 
-      - name: Deploy on DEV environment
-        run: |
-          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637483454218.dkr.ecr.us-east-1.amazonaws.com
-          echo "${{ github.event.repository.name }}-td-dev"
-          TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition ${{ github.event.repository.name }}-td-dev)
-          echo $TASK_DEFINITION >> text.json
+      # - name: Deploy on DEV environment
+      #   run: |
+      #     aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637483454218.dkr.ecr.us-east-1.amazonaws.com
+      #     echo "${{ github.event.repository.name }}-td-dev"
+      #     TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition ${{ github.event.repository.name }}-td-dev)
+      #     echo $TASK_DEFINITION >> text.json
 
-      - name: Task definition register
+      - name: Download task definition
+        run: |
+          aws ecs describe-task-definition --task-definition ${{ github.event.repository.name }}-td-dev --query taskDefinition > text.json
+
+      - name: Render Amazon ECS task definition
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: text.json
-          container-name: orders
-          image: "637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}"
+          image: 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
