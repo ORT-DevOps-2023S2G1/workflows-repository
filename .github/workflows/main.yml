@@ -38,7 +38,8 @@ jobs:
         run: |
           ls -la
           echo "carpeta .mvn" 
-          ls /.mvn
+          cd .mvn
+          ls -la
 
       # - name: Building environment
       #   run: | 
