@@ -27,87 +27,60 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
 
-      # - name: Wait for approval
-      #   uses: ORT-DevOps-2023S2G1/manual-approval@develop
-      #   with:
-      #     secret: ${{ secrets.GITHUB_TOKEN }}
-      #     approvers: mgonzalezgallo
-      #     issue-title: "Deploying on DEV environment"
-      #     issue-body: "Please approve or deny the deployment"
-
-      # - name: Deploy on DEV environment
-      #   run: |
-      #     aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637483454218.dkr.ecr.us-east-1.amazonaws.com
-      #     echo "${{ github.event.repository.name }}-td-dev"
-      #     TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition ${{ github.event.repository.name }}-td-dev)
-      #     echo $TASK_DEFINITION >> text.json
-
-      # - name: Download task definition
-      #   run: |
-      #     aws ecs describe-task-definition --task-definition ${{ github.event.repository.name }}-td-dev --query taskDefinition > text.json
-
-      # - name: Render Amazon ECS task definition
-      #   uses: aws-actions/amazon-ecs-render-task-definition@v1
-      #   with:
-      #     task-definition: text.json
-      #     container-name: orders
-      #     image: 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}
-
-      # - name: Deploy Amazon ECS task definition
-      #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      #   with:
-      #     task-definition: ${{ github.event.repository.name }}-td-dev
-      #     service: ${{github.event.repository.name}}-dev
-      #     cluster: ort-cluster-dev
-      #     wait-for-service-stability: true
+      - name: Wait for approval
+        uses: ORT-DevOps-2023S2G1/manual-approval@develop
+        with:
+          secret: ${{ secrets.GITHUB_TOKEN }}
+          approvers: mgonzalezgallo
+          issue-title: "Deploying on DEV environment"
+          issue-body: "Please approve or deny the deployment"
       
       - name: Download task definition
         run: |
           aws ecs describe-task-definition --task-definition ${{ github.event.repository.name }}-td-dev --query taskDefinition > text.json
-          jq '.containerDefinitions[0].image='\"637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}\" text.json >> task-def.json 
+          jq '.containerDefinitions[0].image='\"637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}\" text.json >> td-dev.json 
        
-        # cat task-def.json
-        # jq -r '.containerDefinitions[]' text.json >> task1-def.json
-        # cat task1-def.json
-        # aws ecs register-task-definition --family ${{ github.event.repository.name }}-td-dev --container-definitions file//./:task1-def.json
-
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          task-definition: task-def.json
+          task-definition: td-dev.json
           service: ${{github.event.repository.name}}-dev
           cluster: ort-cluster-dev
           wait-for-service-stability: true
-        
-        # echo "register"
-        # TASK2=$TASK | ConvertTo-Json
-        # aws ecs register-task-definition --family ${{ github.event.repository.name }}-td-dev --container-definitions $TASK2
-        # echo "update"
-        # aws ecs update-service --cluster ort-cluster-dev --service ${{github.event.repository.name}}-dev --force-new-deployment
- 
-          
-      # - name: Wait for approval
-      #   uses: ORT-DevOps-2023S2G1/manual-approval@develop
-      #   with:
-      #     secret: ${{ secrets.GITHUB_TOKEN }}
-      #     approvers: mgonzalezgallo
-      #     issue-title: "Deploying on STG environment"
-      #     issue-body: "Please approve or deny the deployment"
+                
+      - name: Wait for approval
+        uses: ORT-DevOps-2023S2G1/manual-approval@develop
+        with:
+          secret: ${{ secrets.GITHUB_TOKEN }}
+          approvers: mgonzalezgallo
+          issue-title: "Deploying on STG environment"
+          issue-body: "Please approve or deny the deployment"
 
-      # - name: Deploy on STG environment
-      #   run: aws ecs update-service --cluster ort-cluster-stg --service ${{github.event.repository.name}}-stg --force-new-deployment
+      - name: Download task definition
+        run: |
+          aws ecs describe-task-definition --task-definition ${{ github.event.repository.name }}-td-stg --query taskDefinition > text1.json
+          jq '.containerDefinitions[0].image='\"637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}\" text1.json >> td-stg.json 
+       
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: td-stg.json
+          service: ${{github.event.repository.name}}-stg
+          cluster: ort-cluster-stg
+          wait-for-service-stability: true
 
-      # - name: Wait for approval
-      #   uses: ORT-DevOps-2023S2G1/manual-approval@develop
-      #   with:
-      #     secret: ${{ secrets.GITHUB_TOKEN }}
-      #     approvers: mgonzalezgallo
-      #     issue-title: "Deploying on PRD environment"
-      #     issue-body: "Please approve or deny the deployment"
+      - name: Wait for approval
+        uses: ORT-DevOps-2023S2G1/manual-approval@develop
+        with:
+          secret: ${{ secrets.GITHUB_TOKEN }}
+          approvers: mgonzalezgallo
+          issue-title: "Deploying on PRD environment"
+          issue-body: "Please approve or deny the deployment"
           
-      # - name: Deploy on PRD environment
-      #   run: |
-          
-      #     aws ecs update-service --cluster ort-cluster-prd --service ${{github.event.repository.name}}-prd --force-new-deployment
-
+      - name: Deploy on PRD environment
+        run: |
+           docker pull 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}       
+           docker tag 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }} 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:latest
+           aws ecs update-service --cluster ort-cluster-prd --service ${{github.event.repository.name}}-prd --force-new-deployment
+  
 
