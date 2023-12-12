@@ -43,7 +43,8 @@ jobs:
           echo $TASK_DEFINITION >> text.json
           jq '.containerDefinitions[0].image='\"637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}\" text.json > task-def.json 
           echo "register"
-          aws ecs register-task-definition --family ${{ github.event.repository.name }}-td-dev --container-definitions task-def.json
+          echo task-def.json
+          aws ecs register-task-definition --family ${{ github.event.repository.name }}-td-dev --container-definitions ./task-def.json
           echo "update"
           aws ecs update-service --cluster ort-cluster-dev --service ${{github.event.repository.name}}-dev --force-new-deployment
    
