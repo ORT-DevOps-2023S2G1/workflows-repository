@@ -42,28 +42,33 @@ jobs:
       #     TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition ${{ github.event.repository.name }}-td-dev)
       #     echo $TASK_DEFINITION >> text.json
 
+      # - name: Download task definition
+      #   run: |
+      #     aws ecs describe-task-definition --task-definition ${{ github.event.repository.name }}-td-dev --query taskDefinition > text.json
+
+      # - name: Render Amazon ECS task definition
+      #   uses: aws-actions/amazon-ecs-render-task-definition@v1
+      #   with:
+      #     task-definition: text.json
+      #     container-name: orders
+      #     image: 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}
+
+      # - name: Deploy Amazon ECS task definition
+      #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      #   with:
+      #     task-definition: ${{ github.event.repository.name }}-td-dev
+      #     service: ${{github.event.repository.name}}-dev
+      #     cluster: ort-cluster-dev
+      #     wait-for-service-stability: true
+      
       - name: Download task definition
         run: |
           aws ecs describe-task-definition --task-definition ${{ github.event.repository.name }}-td-dev --query taskDefinition > text.json
-
-      - name: Render Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: text.json
-          container-name: orders
-          image: 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}
-
-      - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: ${{ github.event.repository.name }}-td-dev
-          service: ${{github.event.repository.name}}-dev
-          cluster: ort-cluster-dev
-          wait-for-service-stability: true
-          
-        # jq '.containerDefinitions[0].image='\"637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}\" text.json >> task-def.json 
+          jq '.containerDefinitions[0].image='\"637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}\" text.json >> task-def.json 
+          TASK=$(cat task-def.json)
+          aws ecs register-task-definition --family ${{ github.event.repository.name }}-td-dev --container-definitions $TASK2
         # echo "register"
-        # TASK=$(cat task-def.json)
+          
         # TASK2=$TASK | ConvertTo-Json
         # aws ecs register-task-definition --family ${{ github.event.repository.name }}-td-dev --container-definitions $TASK2
         # echo "update"
