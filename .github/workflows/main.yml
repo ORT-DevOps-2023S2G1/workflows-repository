@@ -32,6 +32,7 @@ jobs:
       - name: Building with Maven
         run: |
           mvn release:clean
+          ls -la
 
       # - name: Building environment
       #   run: | 
