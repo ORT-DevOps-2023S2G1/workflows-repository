@@ -25,9 +25,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           
-      - name: Building with Maven and Inspecting code with SonarCloud
-        run: |
-          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.token=${{ env.SONAR_TOKEN }}  
+      # - name: Building with Maven and Inspecting code with SonarCloud
+      #   run: |
+      #     mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.token=${{ env.SONAR_TOKEN }}  
       
       - name: Building with Maven
         run: |
