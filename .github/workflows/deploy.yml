@@ -47,7 +47,7 @@ jobs:
           wait-for-service-stability: true
 
   deploy_on_stg:
-
+    needs: deploy_on_dev
     runs-on: ubuntu-22.04
     
     name: Deploy on STG Environment
@@ -84,7 +84,7 @@ jobs:
           wait-for-service-stability: true
 
   deploy_on_prd:
-
+    needs: deploy_on_stg
     runs-on: ubuntu-22.04
     
     name: Deploy on PRD Environment
