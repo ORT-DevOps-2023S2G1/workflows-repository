@@ -31,15 +31,12 @@ jobs:
       
       - name: Building with Maven
         run: |
-          mvn release:clean
-          ls -la
+          mvn package
 
-      - name: Building with Maven
+      - name: Chequeo
         run: |
           ls -la
-          echo "carpeta .mvn" 
-          cd .mvn
-          ls -la
+    
 
       # - name: Building environment
       #   run: | 
