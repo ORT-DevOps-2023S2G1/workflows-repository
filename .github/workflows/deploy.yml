@@ -81,6 +81,7 @@ jobs:
         run: |
            docker pull 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}       
            docker tag 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }} 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:latest
+           docker push 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:latest
            aws ecs update-service --cluster ort-cluster-prd --service ${{github.event.repository.name}}-prd --force-new-deployment
   
 
