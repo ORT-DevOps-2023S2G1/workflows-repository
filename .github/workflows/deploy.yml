@@ -3,30 +3,20 @@ name: CD Reusable workflow
 on:
   workflow_call:
 
-  workflow_dispatch:
-
 env:
   REPOS_TOKEN: ${{ secrets.MG_TOKEN }}
   GH_TOKEN: ${{ github.token }}
   REPO_NAME: ${{ github.event.repository.name }}
 
 jobs:
-  deploy:
+  deploy_on_dev:
 
     runs-on: ubuntu-22.04
     
-    name: Deploy
+    name: Deploy on DEV Environment
     steps:
       - uses: actions/checkout@v4
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-region: us-east-1
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-
+      
       - name: Wait for approval
         uses: ORT-DevOps-2023S2G1/manual-approval@develop
         with:
@@ -34,8 +24,16 @@ jobs:
           approvers: mgonzalezgallo
           issue-title: "Deploying on DEV environment"
           issue-body: "Please approve or deny the deployment"
+          
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
       
-      - name: Download task definition
+      - name: Download and Update Task Definition JSON
         run: |
           aws ecs describe-task-definition --task-definition ${{ github.event.repository.name }}-td-dev --query taskDefinition > text.json
           jq '.containerDefinitions[0].image='\"637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}\" text.json >> td-dev.json 
@@ -47,7 +45,15 @@ jobs:
           service: ${{github.event.repository.name}}-dev
           cluster: ort-cluster-dev
           wait-for-service-stability: true
-                
+
+  deploy_on_stg:
+
+    runs-on: ubuntu-22.04
+    
+    name: Deploy on STG Environment
+    steps:
+      - uses: actions/checkout@v4
+      
       - name: Wait for approval
         uses: ORT-DevOps-2023S2G1/manual-approval@develop
         with:
@@ -55,11 +61,19 @@ jobs:
           approvers: mgonzalezgallo
           issue-title: "Deploying on STG environment"
           issue-body: "Please approve or deny the deployment"
-
-      - name: Download task definition
+          
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+      
+      - name: Download and Update Task Definition JSON
         run: |
-          aws ecs describe-task-definition --task-definition ${{ github.event.repository.name }}-td-stg --query taskDefinition > text1.json
-          jq '.containerDefinitions[0].image='\"637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}\" text1.json >> td-stg.json 
+          aws ecs describe-task-definition --task-definition ${{ github.event.repository.name }}-td-stg --query taskDefinition > text.json
+          jq '.containerDefinitions[0].image='\"637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}\" text.json >> td-stg.json 
        
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
@@ -69,6 +83,14 @@ jobs:
           cluster: ort-cluster-stg
           wait-for-service-stability: true
 
+  deploy_on_prd:
+
+    runs-on: ubuntu-22.04
+    
+    name: Deploy on PRD Environment
+    steps:
+      - uses: actions/checkout@v4
+      
       - name: Wait for approval
         uses: ORT-DevOps-2023S2G1/manual-approval@develop
         with:
@@ -77,11 +99,29 @@ jobs:
           issue-title: "Deploying on PRD environment"
           issue-body: "Please approve or deny the deployment"
           
-      - name: Deploy on PRD environment
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+      
+      - name: Download and Update Task Definition JSON
+        run: |
+          aws ecs describe-task-definition --task-definition ${{ github.event.repository.name }}-td-prd --query taskDefinition > text.json
+          jq '.containerDefinitions[0].image='\"637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}\" text.json >> td-prd.json 
+       
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: td-prd.json
+          service: ${{github.event.repository.name}}-prd
+          cluster: ort-cluster-prd
+          wait-for-service-stability: true    
+
+      - name: Tagging Approved Image
         run: |
            docker pull 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}       
            docker tag 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }} 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:latest
            docker push 637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:latest
-           aws ecs update-service --cluster ort-cluster-prd --service ${{github.event.repository.name}}-prd --force-new-deployment
-  
-
