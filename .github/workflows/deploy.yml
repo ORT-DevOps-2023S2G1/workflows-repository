@@ -65,7 +65,7 @@ jobs:
         run: |
           aws ecs describe-task-definition --task-definition ${{ github.event.repository.name }}-td-dev --query taskDefinition > text.json
           jq '.containerDefinitions[0].image='\"637483454218.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-${{ env.REPO_NAME }}:${{ github.run_id }}\" text.json >> task-def.json 
-          echo task-def.json
+          cat task-def.json
           aws ecs register-task-definition --family ${{ github.event.repository.name }}-td-dev --container-definitions file://task-def.json
         # echo "register"
           
