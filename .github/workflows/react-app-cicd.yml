@@ -1,4 +1,4 @@
-name: Upload Website
+name: S3 Hosted Website Update
 
 on:
   workflow_call:
@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    name: Build website
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -25,25 +25,110 @@ jobs:
       - name: Build app
         run: npm run build
 
-      - name: Chequeos
-        run: |
-          ls
-          echo "ls en dist"
-          ls dist/
-
-      - name: Upload Artifact with JAR file
+      - name: Upload Artifact with site files
         uses: actions/upload-artifact@v3
         with:
-          name: "pagina"
-          path: dist/
-          
+          name: build
+          path: dist
 
-      # - name: Upload to S3
-      #   uses: jakejarvis/s3-sync-action@master
-      #   with:
-      #     args: --acl public-read
-      #   env:
-      #     SOURCE_DIR: build/
-      #     AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  deploy_on_dev:
+    needs: build
+    runs-on: ubuntu-latest
+    
+    name: Deploy on DEV Environment
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Wait for approval
+        uses: ORT-DevOps-2023S2G1/manual-approval@develop
+        with:
+          secret: ${{ secrets.GITHUB_TOKEN }}
+          approvers: mgonzalezgallo
+          issue-title: "Deploying website on DEV environment"
+          issue-body: "Please approve or deny the deployment"
+
+      - name: Download artifact with JAR file
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: dist
+          
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+
+      - name: Deploy Amazon ECS task definition
+        run: |
+          aws s3 sync dist/ s3://dev-webapp-ort --delete
+          
+  deploy_on_stg:
+    needs: deploy_on_dev
+    runs-on: ubuntu-latest
+    
+    name: Deploy on STG Environment
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Wait for approval
+        uses: ORT-DevOps-2023S2G1/manual-approval@develop
+        with:
+          secret: ${{ secrets.GITHUB_TOKEN }}
+          approvers: mgonzalezgallo
+          issue-title: "Deploying website on STG environment"
+          issue-body: "Please approve or deny the deployment"
+
+      - name: Download artifact with JAR file
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: dist
+          
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+
+      - name: Deploy Amazon ECS task definition
+        run: |
+          aws s3 sync dist/ s3://stg-webapp-ort --delete
+
+  deploy_on_prd:
+    needs: deploy_on_stg
+    runs-on: ubuntu-latest
+    
+    name: Deploy on PRD Environment
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Wait for approval
+        uses: ORT-DevOps-2023S2G1/manual-approval@develop
+        with:
+          secret: ${{ secrets.GITHUB_TOKEN }}
+          approvers: mgonzalezgallo
+          issue-title: "Deploying website on PRD environment"
+          issue-body: "Please approve or deny the deployment"
+
+      - name: Download artifact with JAR file
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: dist
+          
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+
+      - name: Deploy Amazon ECS task definition
+        run: |
+          aws s3 sync dist/ s3://prd-webapp-ort --delete
