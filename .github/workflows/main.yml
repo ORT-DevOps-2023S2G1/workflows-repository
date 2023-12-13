@@ -79,7 +79,11 @@ jobs:
           -H 'Accept: application/vnd.github.v3.raw' \
           -O \
           -L 'https://api.github.com/repos/ORT-DevOps-2023S2G1/workflows-repository/contents/postman-test/orders-service.postman_collection.json' 
-          
+
+      - name: Control
+        run: cat orders-service.postman_collection.json
+
+   
       - name: Run API tests using Postman CLI
         run: postman collection run orders-service.postman_collection.json
 
