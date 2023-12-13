@@ -12,11 +12,11 @@ env:
   APP_ARGS: 'http://localhost:8081 http://localhost:8082 http://localhost:8083'
 
 jobs:
-  build_test_release_job:
+  build_analysis_job:
 
     runs-on: ubuntu-22.04
     
-    name: Build Test and Release
+    name: Building with Maven and Code Analysis with SonarCloud
     steps:
       - uses: actions/checkout@v4
       
@@ -25,20 +25,38 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           
-      - name: Building with Maven and Inspecting code with SonarCloud
-        run: |
-          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.token=${{ env.SONAR_TOKEN }}  
+      # - name: Code Analysis with SonarCloud
+      #   run: |
+      #     mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.token=${{ env.SONAR_TOKEN }}  
       
       - name: Building with Maven
         run: |
           mvn clean
           mvn package
 
+      - name: Upload Artifact with JAR file
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.REPO_NAME }}-JAR-${{ github.run_id }}
+          path: target/${{ env.REPO_NAME }}-example.jar
+  
+  orders_test_job:
+    if: github.event.repository.name == 'orders-service'
+    needs: build_analysis_job
+    runs-on: ubuntu-22.04
+    
+    name: Postman Test for orders-service
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download artifact with JAR file
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ env.REPO_NAME }}-JAR-${{ github.run_id }}
+      
       - name: Building environment
         run: | 
-          gh repo clone ORT-DevOps-2023S2G1/orders-service
-          mvn -f orders-service/ -B package
-          java -jar orders-service/target/orders-service-example.jar ${{ env.APP_ARGS }} --server.port=8080 &
+          java -jar ${{ env.REPO_NAME }}-example.jar ${{ env.APP_ARGS }} --server.port=8080 &
           gh repo clone ORT-DevOps-2023S2G1/payments-service
           mvn -f payments-service/ -B package
           java -jar payments-service/target/payments-service-example.jar --server.port=8081 &
@@ -55,27 +73,53 @@ jobs:
       - name: Login to Postman CLI
         run:  postman login --with-api-key ${{ env.POSTMAN_API_KEY }}
 
-      - name: Get JSON file with postman collection
+      - name: Get Postman JSON File 
         run: |
           curl -H 'Authorization: token ${{ env.REPOS_TOKEN }}' \
           -H 'Accept: application/vnd.github.v3.raw' \
           -O \
-          -L 'https://api.github.com/repos/ORT-DevOps-2023S2G1/workflows-repository/contents/DevOps-ApiCollection.postman_collection_v2.json' 
-          
+          -L 'https://api.github.com/repos/ORT-DevOps-2023S2G1/workflows-repository/contents/postman-test/orders-service.postman_collection.json' 
+   
       - name: Run API tests using Postman CLI
-        run: postman collection run DevOps-ApiCollection.postman_collection_v2.json
+        run: postman collection run orders-service.postman_collection.json
 
-      - name: Upload Artifact with JAR file
-        uses: actions/upload-artifact@v3
+  test_job:
+    if: github.event.repository.name != 'orders-service'
+    needs: build_analysis_job
+    runs-on: ubuntu-22.04
+    
+    name: Postman Test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download artifact with JAR file
+        uses: actions/download-artifact@v3
         with:
           name: ${{ env.REPO_NAME }}-JAR-${{ github.run_id }}
-          path: target/${{ env.REPO_NAME }}-example.jar
+      
+      - name: Building environment
+        run: | 
+          java -jar ${{ env.REPO_NAME }}-example.jar --server.port=8080 &
 
+      - name: Install Postman CLI
+        run: curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
 
-  build_push_docker_image_with_args:
-    needs: build_test_release_job
+      - name: Login to Postman CLI
+        run:  postman login --with-api-key ${{ env.POSTMAN_API_KEY }}
+
+      - name: Get Postman JSON File 
+        run: |
+          curl -H 'Authorization: token ${{ env.REPOS_TOKEN }}' \
+          -H 'Accept: application/vnd.github.v3.raw' \
+          -O \
+          -L 'https://api.github.com/repos/ORT-DevOps-2023S2G1/workflows-repository/contents/postman-test/${{ env.REPO_NAME }}.postman_collection.json' 
+          
+      - name: Run API tests using Postman CLI
+        run: postman collection run ${{ env.REPO_NAME }}.postman_collection.json
+
+  build_push_docker_image_with_args:  
     if: github.event.repository.name == 'orders-service'
-    
+    needs: orders_test_job
     runs-on: ubuntu-22.04
     
     name: Build Docker Image with args
@@ -86,7 +130,7 @@ jobs:
           curl -H 'Authorization: token ${{ env.REPOS_TOKEN }}' \
           -H 'Accept: application/vnd.github.v3.raw' \
           -O \
-          -L 'https://api.github.com/repos/ORT-DevOps-2023S2G1/workflows-repository/contents/Dockerfile_args'
+          -L 'https://api.github.com/repos/ORT-DevOps-2023S2G1/workflows-repository/contents/dockerfiles/dockerfile_args'
 
       - name: Download artifact with JAR file
         uses: actions/download-artifact@v3
@@ -111,9 +155,8 @@ jobs:
 
           
   build_push_docker_image_without_args:
-    needs: build_test_release_job
     if: github.event.repository.name != 'orders-service'
-    
+    needs: test_job
     runs-on: ubuntu-22.04
     
     name: Build Docker Image without args
@@ -124,7 +167,7 @@ jobs:
           curl -H 'Authorization: token ${{ env.REPOS_TOKEN }}' \
           -H 'Accept: application/vnd.github.v3.raw' \
           -O \
-          -L 'https://api.github.com/repos/ORT-DevOps-2023S2G1/workflows-repository/contents/Dockerfile_no_args'
+          -L 'https://api.github.com/repos/ORT-DevOps-2023S2G1/workflows-repository/contents/dockerfiles/dockerfile_no_args'
 
       - name: Download artifact with JAR file
         uses: actions/download-artifact@v3

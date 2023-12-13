@@ -1,0 +1,48 @@
+{
+	"info": {
+		"_postman_id": "882e48ae-44fc-4aa0-a109-559572bf4224",
+		"name": "DevOps-PaymentsCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20374954",
+		"_collection_link": "https://cloudy-meadow-846377.postman.co/workspace/Gonzalo's-Workspace~0a37a8cf-928a-4c55-82ee-b564b63eecb5/collection/20374954-882e48ae-44fc-4aa0-a109-559572bf4224?action=share&source=collection_link&creator=20374954"
+	},
+	"item": [
+		{
+			"name": "Hacer un pago de orden",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"pm.test(\"Response time is less than 2000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/payments/{{orderId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"payments",
+						"{{orderId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

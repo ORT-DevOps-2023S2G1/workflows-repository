@@ -1,0 +1,83 @@
+{
+	"info": {
+		"_postman_id": "d4059548-9d10-43cb-aa20-5097acde0a0c",
+		"name": "DevOps-ShippmentCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20374954",
+		"_collection_link": "https://cloudy-meadow-846377.postman.co/workspace/Gonzalo's-Workspace~0a37a8cf-928a-4c55-82ee-b564b63eecb5/collection/20374954-d4059548-9d10-43cb-aa20-5097acde0a0c?action=share&source=collection_link&creator=20374954"
+	},
+	"item": [
+		{
+			"name": "Ver estado de envío",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"pm.test(\"Response time is less than 2000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/shipping/c",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shipping",
+						"c"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Hacer un envio",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"pm.test(\"Response time is less than 2000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/shipping/{{shippingId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shipping",
+						"{{shippingId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
