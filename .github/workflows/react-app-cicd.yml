@@ -20,7 +20,7 @@ jobs:
         uses: sonarsource/sonarcloud-github-action@master
         with:
           args: >
-            -Dsonar.organization=ORT-DevOps-2023S2G1
+            -Dsonar.organization=ort-devops-2023s2g1
             -Dsonar.projectKey=ORT-DevOps-2023S2G1_web-app
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
