@@ -8,7 +8,7 @@
 	},
 	"item": [
 		{
-			"name": "Realizar una compra-Ordes",
+			"name": "Realizar una compra",
 			"event": [
 				{
 					"listen": "test",
@@ -39,7 +39,7 @@
 				},
 				"url": {
 					"raw": "\"http://localhost:8080/orders",
-					"protocol": "\"http",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
