@@ -8,7 +8,7 @@
 	},
 	"item": [
 		{
-			"name": "Obtener todos los productos-Product",
+			"name": "Obtener todos los productos",
 			"event": [
 				{
 					"listen": "test",
@@ -43,7 +43,7 @@
 			"response": []
 		},
 		{
-			"name": "Obtener un producto-Product",
+			"name": "Obtener un producto",
 			"event": [
 				{
 					"listen": "test",
