@@ -8,7 +8,7 @@
 	},
 	"item": [
 		{
-			"name": "Realizar una compra-Order",
+			"name": "Realizar una compra-Ordes",
 			"event": [
 				{
 					"listen": "test",
