@@ -81,7 +81,7 @@ jobs:
           -L 'https://api.github.com/repos/ORT-DevOps-2023S2G1/workflows-repository/contents/postman-test/orders-service.postman_collection.json' 
           
       - name: Run API tests using Postman CLI
-        run: postman collection run orders-service.postman_collection.json
+        run: postman collection run postman-test/orders-service.postman_collection.json
 
   test_job:
     if: github.event.repository.name != 'orders-service'
@@ -115,7 +115,7 @@ jobs:
           -L 'https://api.github.com/repos/ORT-DevOps-2023S2G1/workflows-repository/contents/postman-test/${{ env.REPO_NAME }}.postman_collection.json' 
           
       - name: Run API tests using Postman CLI
-        run: postman collection run ${{ env.REPO_NAME }}.postman_collection.json
+        run: postman collection run postman-test/${{ env.REPO_NAME }}.postman_collection.json
 
   build_push_docker_image_with_args:  
     if: github.event.repository.name == 'orders-service'
