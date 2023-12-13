@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "7b156ff0-9278-4765-8ca6-650467ca88c5",
-		"name": "DevOps-OrdersCollection",
+		"name": "orders-service",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "20374954",
 		"_collection_link": "https://cloudy-meadow-846377.postman.co/workspace/Gonzalo's-Workspace~0a37a8cf-928a-4c55-82ee-b564b63eecb5/collection/20374954-7b156ff0-9278-4765-8ca6-650467ca88c5?action=share&source=collection_link&creator=20374954"
