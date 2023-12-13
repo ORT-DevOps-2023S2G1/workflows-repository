@@ -21,7 +21,8 @@ jobs:
         uses: ORT-DevOps-2023S2G1/manual-approval@develop
         with:
           secret: ${{ secrets.GITHUB_TOKEN }}
-          approvers: mgonzalezgallo
+          approvers: mgonzalezgallo, GonzaFernandez
+          minimum-approvals: 1
           issue-title: "Deploying on DEV environment"
           issue-body: "Please approve or deny the deployment"
           
@@ -58,7 +59,8 @@ jobs:
         uses: ORT-DevOps-2023S2G1/manual-approval@develop
         with:
           secret: ${{ secrets.GITHUB_TOKEN }}
-          approvers: mgonzalezgallo
+          approvers: mgonzalezgallo, GonzaFernandez
+          minimum-approvals: 1
           issue-title: "Deploying on STG environment"
           issue-body: "Please approve or deny the deployment"
           
@@ -95,7 +97,8 @@ jobs:
         uses: ORT-DevOps-2023S2G1/manual-approval@develop
         with:
           secret: ${{ secrets.GITHUB_TOKEN }}
-          approvers: mgonzalezgallo
+          approvers: mgonzalezgallo, GonzaFernandez
+          minimum-approvals: 1
           issue-title: "Deploying on PRD environment"
           issue-body: "Please approve or deny the deployment"
           
