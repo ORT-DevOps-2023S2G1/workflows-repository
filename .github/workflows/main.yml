@@ -48,12 +48,15 @@ jobs:
     name: Postman Test for orders-service
     steps:
       - uses: actions/checkout@v4
+
+      - name: Download artifact with JAR file
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ env.REPO_NAME }}-JAR-${{ github.run_id }}
       
       - name: Building environment
         run: | 
-          gh repo clone ORT-DevOps-2023S2G1/orders-service
-          mvn -f orders-service/ -B package
-          java -jar orders-service/target/orders-service-example.jar ${{ env.APP_ARGS }} --server.port=8080 &
+          java -jar ${{ env.REPO_NAME }}-example.jar ${{ env.APP_ARGS }} --server.port=8080 &
           gh repo clone ORT-DevOps-2023S2G1/payments-service
           mvn -f payments-service/ -B package
           java -jar payments-service/target/payments-service-example.jar --server.port=8081 &
@@ -88,12 +91,15 @@ jobs:
     name: Postman Test
     steps:
       - uses: actions/checkout@v4
+
+      - name: Download artifact with JAR file
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ env.REPO_NAME }}-JAR-${{ github.run_id }}
       
       - name: Building environment
         run: | 
-          gh repo clone ORT-DevOps-2023S2G1/${{ env.REPO_NAME }}
-          mvn -f ${{ env.REPO_NAME }}/ -B package
-          java -jar ${{ env.REPO_NAME }}/target/${{ env.REPO_NAME }}-example.jar --server.port=8080 &
+          java -jar ${{ env.REPO_NAME }}-example.jar --server.port=8080 &
 
       - name: Install Postman CLI
         run: curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
