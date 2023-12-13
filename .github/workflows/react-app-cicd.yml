@@ -19,7 +19,6 @@ jobs:
       - name: Analyze with SonarCloud
         uses: sonarsource/sonarcloud-github-action@master
         with:
-          projectBaseDir: src
           args: >
             -Dsonar.organization=ort-devops-2023s2g1
             -Dsonar.projectKey=ORT-DevOps-2023S2G1_web-app
