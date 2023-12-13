@@ -82,8 +82,8 @@ jobs:
 
       - name: Control
         run: |
-          ls
-          cat orders-service.postman_collection.json
+          ls postman-test/
+          cat postman-test/orders-service.postman_collection.json
 
    
       - name: Run API tests using Postman CLI
