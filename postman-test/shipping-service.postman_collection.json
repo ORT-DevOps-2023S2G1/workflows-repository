@@ -34,7 +34,7 @@
 					"host": [
 						"localhost"
 					],
-					"port": "8082",
+					"port": "8080",
 					"path": [
 						"shipping",
 						"c"
@@ -44,7 +44,7 @@
 			"response": []
 		},
 		{
-			"name": "Hacer un envio-Shipping",
+			"name": "Hacer un envio",
 			"event": [
 				{
 					"listen": "test",
@@ -70,7 +70,7 @@
 					"host": [
 						"localhost"
 					],
-					"port": "8082",
+					"port": "8080",
 					"path": [
 						"shipping",
 						"{{shippingId}}"
