@@ -8,7 +8,7 @@
 	},
 	"item": [
 		{
-			"name": "Ver estado de envío-Shipping",
+			"name": "Ver estado de envío",
 			"event": [
 				{
 					"listen": "test",
