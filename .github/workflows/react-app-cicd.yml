@@ -21,6 +21,7 @@ jobs:
         with:
           args: >
             -Dsonar.organization=ORT-DevOps-2023S2G1
+            -Dsonar.projectKey=ORT-DevOps-2023S2G1_web-app
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
