@@ -8,7 +8,7 @@
 	},
 	"item": [
 		{
-			"name": "Hacer un pago de orden-Payments",
+			"name": "Hacer un pago de orden",
 			"event": [
 				{
 					"listen": "test",
