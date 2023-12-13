@@ -78,10 +78,12 @@ jobs:
           curl -H 'Authorization: token ${{ env.REPOS_TOKEN }}' \
           -H 'Accept: application/vnd.github.v3.raw' \
           -O \
-          -L 'https://api.github.com/repos/ORT-DevOps-2023S2G1/workflows-repository/contents/postman-test/orders-service.postman_collection.json' 
+          -L 'https://api.github.com/repos/ORT-DevOps-2023S2G1/workflows-repository/contents/postman-test' 
 
       - name: Control
-        run: cat orders-service.postman_collection.json
+        run: |
+          ls
+          cat orders-service.postman_collection.json
 
    
       - name: Run API tests using Postman CLI
