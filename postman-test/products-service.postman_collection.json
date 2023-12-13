@@ -34,7 +34,7 @@
 					"host": [
 						"localhost"
 					],
-					"port": "8083",
+					"port": "8080",
 					"path": [
 						"products"
 					]
@@ -69,7 +69,7 @@
 					"host": [
 						"localhost"
 					],
-					"port": "8083",
+					"port": "8080",
 					"path": [
 						"products",
 						"123"
