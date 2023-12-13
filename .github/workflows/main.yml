@@ -45,7 +45,7 @@ jobs:
     needs: build_analysis_job
     runs-on: ubuntu-22.04
     
-    name: Postman Test for ${{ env.REPO_NAME }}
+    name: Postman Test for orders-service
     steps:
       - uses: actions/checkout@v4
       
@@ -85,7 +85,7 @@ jobs:
     needs: build_analysis_job
     runs-on: ubuntu-22.04
     
-    name: Postman Test for ${{ env.REPO_NAME }}
+    name: Postman Test
     steps:
       - uses: actions/checkout@v4
       
