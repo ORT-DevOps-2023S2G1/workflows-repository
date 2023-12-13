@@ -41,7 +41,7 @@ jobs:
           path: target/${{ env.REPO_NAME }}-example.jar
   
   orders_test_job:
-    if: ${{ env.REPO_NAME }} == 'orders-service'
+    if: github.event.repository.name == 'orders-service'
     needs: build_analysis_job
     runs-on: ubuntu-22.04
     
@@ -81,7 +81,7 @@ jobs:
         run: postman collection run orders-service.postman_collection.json
 
   test_job:
-    if: ${{ env.REPO_NAME }} != 'orders-service'
+    if: github.event.repository.name != 'orders-service'
     needs: build_analysis_job
     runs-on: ubuntu-22.04
     
